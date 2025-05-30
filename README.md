@@ -71,4 +71,23 @@ INSERT INTO employee (Empno, EmpName, DoJ, Gender, Bsalary) VALUES
 (105, 'Charlie Davis', '2019-11-11', 'Male', 32000.00);
 
 ```
+##  Installation & Setup
 
+###  Step 1: Clone or Download the Project
+- Download all the project files.
+- Organize them according to the folder structure provided above.
+
+---
+
+###  Step 2: Database Configuration
+1. Start your **MySQL server**.
+2. Run the **database setup SQL script** provided in the "Database Setup" section.
+3. Update the database credentials in `EmployeeDAO.java`:
+
+```java
+connection = DriverManager.getConnection(
+    "jdbc:mysql://localhost:3306/employeedb", 
+    "your_username", 
+    "your_password"
+);
+```
