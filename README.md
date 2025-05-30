@@ -104,13 +104,7 @@ connection = DriverManager.getConnection(
 - Deploy the project to the **Tomcat server**  
 - Start the **Tomcat server**
 
-### Step 5: Access the Application
 
-Open your web browser and navigate to:
-
-```
-http://localhost:8080/Product_Management_System/
-```
 ---
 ### Output
 ### Home Page
