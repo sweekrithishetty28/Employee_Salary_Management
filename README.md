@@ -108,12 +108,13 @@ connection = DriverManager.getConnection(
 ![Display Products](https://github.com/sweekrithishetty28/Employee_Salary_Management/blob/6a364d74371104c2f325f1cbdb55ba3696d5515c/Screenshots/display.png)
 
 ### Generate Reports
-![Generate Reports](https://github.com/sweekrithishetty28/Employee-Salary-Management/raw/9c057c9e4501d9283d9b2a6a028d61cf385ce252/Screenshots/report1.png)
-![Generate Reports](https://github.com/sweekrithishetty28/Employee-Salary-Management/raw/9c057c9e4501d9283d9b2a6a028d61cf385ce252/Screenshots/report2.png)
-![Generate Reports](https://github.com/sweekrithishetty28/Employee-Salary-Management/raw/9c057c9e4501d9283d9b2a6a028d61cf385ce252/Screenshots/report3.png)
-![Generate Reports](https://github.com/sweekrithishetty28/Employee-Salary-Management/raw/9c057c9e4501d9283d9b2a6a028d61cf385ce252/Screenshots/report4.png)
-![Generate Reports](https://github.com/sweekrithishetty28/Employee-Salary-Management/raw/9c057c9e4501d9283d9b2a6a028d61cf385ce252/Screenshots/report5.png)
-![Generate Reports](https://github.com/sweekrithishetty28/Employee-Salary-Management/raw/9c057c9e4501d9283d9b2a6a028d61cf385ce252/Screenshots/report6.png)
-![Generate Reports](https://github.com/sweekrithishetty28/Employee-Salary-Management/raw/9c057c9e4501d9283d9b2a6a028d61cf385ce252/Screenshots/report7.png)
+![Generate Reports](https://github.com/sweekrithishetty28/Employee_Salary_Management/blob/ef856a7339fc098fb1a1e8d07e7836c126b1fbc3/Screenshots/report1.png)
+![Generate Reports](https://github.com/sweekrithishetty28/Employee_Salary_Management/blob/ef856a7339fc098fb1a1e8d07e7836c126b1fbc3/Screenshots/report2.png)
+![Generate Reports](https://github.com/sweekrithishetty28/Employee_Salary_Management/blob/ef856a7339fc098fb1a1e8d07e7836c126b1fbc3/Screenshots/report3.png)
+![Generate Reports](https://github.com/sweekrithishetty28/Employee_Salary_Management/blob/ef856a7339fc098fb1a1e8d07e7836c126b1fbc3/Screenshots/report4.png)
+![Generate Reports](
+https://github.com/sweekrithishetty28/Employee_Salary_Management/blob/ef856a7339fc098fb1a1e8d07e7836c126b1fbc3/Screenshots/report5.png)
+![Generate Reports](https://github.com/sweekrithishetty28/Employee_Salary_Management/blob/ef856a7339fc098fb1a1e8d07e7836c126b1fbc3/Screenshots/report6.png)
+![Generate Reports](https://github.com/sweekrithishetty28/Employee_Salary_Management/blob/ef856a7339fc098fb1a1e8d07e7836c126b1fbc3/Screenshots/report7.png)
 
 
