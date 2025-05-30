@@ -64,11 +64,11 @@ CREATE TABLE employee (
 );
 
 INSERT INTO employee (Empno, EmpName, DoJ, Gender, Bsalary) VALUES
-(101, 'John Doe', '2018-06-15', 'Male', 35000.00),
-(102, 'Jane Smith', '2017-03-22', 'Female', 45000.00),
-(103, 'Alice Johnson', '2020-01-10', 'Female', 28000.00),
-(104, 'Bob Brown', '2015-09-05', 'Male', 55000.00),
-(105, 'Charlie Davis', '2019-11-11', 'Male', 32000.00);
+(101, 'Manvitha Shetty', '2018-06-15', 'Female', 35000.00),
+(102, 'Sweekrithi Rao', '2009-10-12', 'Female', 89000.00),
+(103, 'Rajesh Kumar', '2005-07-26', 'Male', 45000.00),
+(104, 'Asha Patel', '2021-12-08', 'Female', 50000.00),
+(105, 'Kiran Reddy', '2017-04-09', 'Male', 78000.00);
 
 ```
 ##  Installation & Setup
