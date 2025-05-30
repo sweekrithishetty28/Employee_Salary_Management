@@ -87,10 +87,31 @@ INSERT INTO employee (Empno, EmpName, DoJ, Gender, Bsalary) VALUES
 ```java
 connection = DriverManager.getConnection(
     "jdbc:mysql://localhost:3306/employeedb", 
-    "your_username", 
-    "your_password"
+    "root", 
+    " "
 );
 ```
+### Step 3: Add MySQL JDBC Driver
+
+- Download **MySQL Connector/J** from the official MySQL website  
+- Add the JAR file to your project's `WEB-INF/lib` directory  
+- If using an IDE, add it to your **build path**  
+
+### Step 4: Deploy to Tomcat
+
+- Create a new **Dynamic Web Project** in your IDE  
+- Copy all source files to the appropriate folders  
+- Deploy the project to the **Tomcat server**  
+- Start the **Tomcat server**
+
+### Step 5: Access the Application
+
+Open your web browser and navigate to:
+
+```
+http://localhost:8080/Product_Management_System/
+```
+---
 ### Output
 ### Home Page
 ![Home Page](https://github.com/sweekrithishetty28/Employee_Salary_Management/blob/6a364d74371104c2f325f1cbdb55ba3696d5515c/Screenshots/home.png)
