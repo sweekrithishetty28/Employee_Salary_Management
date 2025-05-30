@@ -1,0 +1,172 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="java.util.*, com.model.Employee, com.dao.EmployeeDAO, java.text.*" %>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Update Employee</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background: #f5f5f5; }
+        .container { max-width: 1200px; margin: 0 auto; }
+        .header { background: #4CAF50; color: white; padding: 20px; text-align: center; border-radius: 5px; margin-bottom: 20px; }
+        .section { background: white; padding: 20px; margin: 15px 0; border-radius: 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .form-group { margin: 15px 0; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; }
+        input, select { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 3px; }
+        .btn { background: #4CAF50; color: white; padding: 10px 20px; border: none; border-radius: 3px; cursor: pointer; margin: 5px; }
+        .btn:hover { background: #45a049; }
+        .btn-secondary { background: #666; }
+        .btn-search { background: #ff9800; }
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #ddd; }
+        th { background: #4CAF50; color: white; }
+        .alert { padding: 15px; margin: 10px 0; border-radius: 3px; }
+        .error { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        .success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .info { background: #d1ecf1; color: #0c5460; border: 1px solid #bee5eb; }
+        .search-form { display: flex; gap: 10px; align-items: end; }
+        .gender-badge { padding: 3px 8px; border-radius: 10px; font-size: 12px; }
+        .male { background: #e3f2fd; color: #1976d2; }
+        .female { background: #fce4ec; color: #c2185b; }
+        .other { background: #f5f5f5; color: #666; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Update Employee</h1>
+            <a href="index.jsp" style="color: white;">← Back to Home</a>
+        </div>
+
+        <!-- Search Section -->
+        <div class="section">
+            <h3>Search Employee</h3>
+            <form method="get" class="search-form">
+                <div style="flex: 1;">
+                    <label>Employee ID *</label>
+                    <input type="number" name="id" required min="1" 
+                           value="<%= request.getParameter("id") != null ? request.getParameter("id") : "" %>">
+                </div>
+                <button type="submit" class="btn btn-search">Search</button>
+            </form>
+        </div>
+
+        <%
+        String idParam = request.getParameter("id");
+        Employee emp = null;
+        boolean found = false;
+        String error = "";
+        
+        if (idParam != null && !idParam.trim().isEmpty()) {
+            try {
+                int empId = Integer.parseInt(idParam);
+                emp = EmployeeDAO.getEmployeeById(empId);
+                found = emp != null;
+                if (!found) error = "Employee with ID " + empId + " not found!";
+            } catch (Exception e) {
+                error = "Error: " + e.getMessage();
+            }
+        }
+        %>
+        
+        <% if (!error.isEmpty()) { %>
+        <div class="alert error"><%= error %></div>
+        <% } %>
+        
+        <% if (found && emp != null) { %>
+        <div class="alert info">
+            <strong>Found:</strong> <%= emp.getName() %> (ID: <%= emp.getId() %>)
+        </div>
+        
+        <!-- Update Form -->
+        <div class="section">
+            <h3>Update Employee</h3>
+            <form action="UpdateEmployee" method="post">
+                <input type="hidden" name="id" value="<%= emp.getId() %>">
+                
+                <div class="form-group">
+                    <label>Employee ID</label>
+                    <input type="text" value="<%= emp.getId() %>" disabled style="background: #f5f5f5;">
+                </div>
+                
+                <div class="form-group">
+                    <label>Name *</label>
+                    <input type="text" name="name" required value="<%= emp.getName() %>">
+                </div>
+                
+                <div class="form-group">
+                    <label>Date of Joining *</label>
+                    <input type="date" name="doj" required value="<%= emp.getDoj() %>">
+                </div>
+                
+                <div class="form-group">
+                    <label>Gender *</label>
+                    <select name="gender" required>
+                        <option value="">Select</option>
+                        <option value="Male" <%= "Male".equals(emp.getGender()) ? "selected" : "" %>>Male</option>
+                        <option value="Female" <%= "Female".equals(emp.getGender()) ? "selected" : "" %>>Female</option>
+                        <option value="Other" <%= "Other".equals(emp.getGender()) ? "selected" : "" %>>Other</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>Salary *</label>
+                    <input type="number" name="salary" required step="0.01" min="0" value="<%= emp.getSalary() %>">
+                </div>
+                
+                <button type="submit" class="btn">Update Employee</button>
+                <button type="reset" class="btn btn-secondary">Reset</button>
+            </form>
+        </div>
+        <% } %>
+        
+        <!-- All Employees -->
+        <div class="section">
+            <h3>All Employees</h3>
+            <%
+            try {
+                List<Employee> list = EmployeeDAO.getAllEmployees();
+                if (list != null && !list.isEmpty()) {
+            %>
+            <table>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Date of Joining</th>
+                    <th>Gender</th>
+                    <th>Salary</th>
+                </tr>
+                <%
+                for (Employee e : list) {
+                    String highlight = (found && emp != null && e.getId() == emp.getId()) ? "style='background: #fff3cd;'" : "";
+                %>
+                <tr <%= highlight %>>
+                    <td><%= e.getId() %></td>
+                    <td><%= e.getName() %></td>
+                    <td><%= e.getDoj() %></td>
+                    <td>
+                        <span class="gender-badge <%= e.getGender().toLowerCase() %>">
+                            <%= e.getGender() %>
+                        </span>
+                    </td>
+                    <td>₹<%= String.format("%.2f", e.getSalary()) %></td>
+                </tr>
+                <%
+                }
+                %>
+            </table>
+            <%
+                } else {
+            %>
+            <p>No employees found.</p>
+            <%
+                }
+            } catch (Exception ex) {
+            %>
+            <div class="alert error">Error loading employees: <%= ex.getMessage() %></div>
+            <%
+            }
+            %>
+        </div>
+    </div>
+</body>
+</html>

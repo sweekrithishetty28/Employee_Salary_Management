@@ -1,0 +1,42 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" %>
+<html>
+<head>
+    <title>Update Employee</title>
+    <style>
+        body { font-family: Arial; margin: 20px; }
+        form { width: 300px; margin: auto; }
+        label, input, select { display: block; width: 100%; margin-bottom: 10px; }
+        input[type="submit"] { width: auto; padding: 5px 10px; }
+        .message { color: green; }
+        .error { color: red; }
+    </style>
+</head>
+<body>
+    <h2>Update Employee</h2>
+    <form action="updateEmployee" method="post">
+        <label>Emp No:</label>
+        <input type="number" name="empno" required />
+
+        <label>Emp Name:</label>
+        <input type="text" name="empname" required />
+
+        <label>Date of Joining:</label>
+        <input type="date" name="doj" required />
+
+        <label>Gender:</label>
+        <select name="gender" required>
+            <option value="">--Select--</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+        </select>
+
+        <label>Basic Salary:</label>
+        <input type="number" name="bsalary" step="0.01" required />
+
+        <input type="submit" value="Update Employee" />
+    </form>
+
+    <div class="message"><%= request.getAttribute("message") != null ? request.getAttribute("message") : "" %></div>
+    <div class="error"><%= request.getAttribute("error") != null ? request.getAttribute("error") : "" %></div>
+</body>
+</html>

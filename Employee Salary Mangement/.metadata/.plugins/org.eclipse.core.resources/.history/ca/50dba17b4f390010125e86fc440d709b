@@ -1,0 +1,25 @@
+package com.servlet;
+
+import javax.servlet.*;
+import javax.servlet.http.*;
+import java.io.IOException;
+import java.util.List;
+
+import com.dao.EmployeeDAO;
+import com.model.Employee;
+
+public class DisplayEmployeeServlet extends HttpServlet {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        try {
+            List<Employee> employees = EmployeeDAO.getAllEmployees();
+            System.out.println("Employees fetched: " + employees.size());  // debugging
+            request.setAttribute("employeeList", employees);
+        } catch (Exception e) {
+            e.printStackTrace();
+            request.setAttribute("message", "Error: " + e.getMessage());
+        }
+        RequestDispatcher rd = request.getRequestDispatcher("empdisplay.jsp");
+        rd.forward(request, response);
+    }
+}

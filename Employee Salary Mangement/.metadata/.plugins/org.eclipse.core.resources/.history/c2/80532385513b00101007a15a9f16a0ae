@@ -1,0 +1,59 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<html>
+<head>
+    <title>Report Filters</title>
+</head>
+<body>
+<h2>Generate Report</h2>
+
+<% String error = (String) request.getAttribute("error"); %>
+<% if (error != null) { %>
+    <div style="color:red;"><%= error %></div>
+<% } %>
+
+<form method="post" action="ReportCriteriaServlet">
+    <label>Select Report Type:</label><br/>
+    <select name="reportType" onchange="toggleInputs(this.value)">
+        <option value="">--Select--</option>
+        <option value="NameFilter">Name Starts With</option>
+        <option value="ServiceFilter">Years of Service</option>
+        <option value="SalaryFilter">Salary Threshold</option>
+    </select><br/><br/>
+
+    <div id="nameDiv" style="display:none;">
+        <label>Starts With:</label>
+        <input type="text" name="startsWith" />
+    </div>
+
+    <div id="serviceDiv" style="display:none;">
+        <label>Years of Service:</label>
+        <input type="number" name="years" />
+    </div>
+
+    <div id="salaryDiv" style="display:none;">
+        <label>Salary Greater Than:</label>
+        <input type="number" name="salary" />
+    </div>
+
+    <br/>
+    <input type="submit" value="Generate Report" />
+</form>
+
+<script>
+function toggleInputs(value) {
+    document.getElementById("nameDiv").style.display = "none";
+    document.getElementById("serviceDiv").style.display = "none";
+    document.getElementById("salaryDiv").style.display = "none";
+
+    if (value === "NameFilter") {
+        document.getElementById("nameDiv").style.display = "block";
+    } else if (value === "ServiceFilter") {
+        document.getElementById("serviceDiv").style.display = "block";
+    } else if (value === "SalaryFilter") {
+        document.getElementById("salaryDiv").style.display = "block";
+    }
+}
+</script>
+
+</body>
+</html>

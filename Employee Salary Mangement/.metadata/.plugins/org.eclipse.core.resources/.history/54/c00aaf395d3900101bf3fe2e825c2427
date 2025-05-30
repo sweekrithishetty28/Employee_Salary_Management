@@ -1,0 +1,30 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<html>
+<head>
+    <title>Employee Reports</title>
+</head>
+<body>
+    <h2>Generate Employee Reports</h2>
+
+    <!-- Name starts with -->
+    <form action="ReportServlet" method="get">
+        <label>Employee name starts with:</label>
+        <input type="text" name="startsWith" maxlength="1" required />
+        <input type="submit" name="action" value="NameFilter" />
+    </form>
+
+    <!-- Years of service -->
+    <form action="ReportServlet" method="get">
+        <label>Employees with more than N years of service:</label>
+        <input type="number" name="years" min="1" required />
+        <input type="submit" name="action" value="ServiceFilter" />
+    </form>
+
+    <!-- Salary more than -->
+    <form action="ReportServlet" method="get">
+        <label>Employees earning more than:</label>
+        <input type="number" name="salary" step="0.01" min="0" required />
+        <input type="submit" name="action" value="SalaryFilter" />
+    </form>
+</body>
+</html>

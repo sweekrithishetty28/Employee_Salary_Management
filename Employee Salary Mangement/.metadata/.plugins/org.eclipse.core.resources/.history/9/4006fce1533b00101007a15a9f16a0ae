@@ -1,0 +1,51 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="java.util.List" %>
+<%@ page import="com.model.Employee" %>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Report Results</title>
+</head>
+<body>
+    <h2>Report Results</h2>
+
+    <%
+        String error = (String) request.getAttribute("error");
+        if (error != null) {
+    %>
+        <p style="color: red;"><%= error %></p>
+    <%
+        } else {
+            List<Employee> list = (List<Employee>) request.getAttribute("employeeList");
+            if (list == null || list.isEmpty()) {
+    %>
+        <p>No employees found for the given criteria.</p>
+    <%
+            } else {
+    %>
+        <table border="1">
+            <tr>
+                <th>Emp No</th>
+                <th>Name</th>
+                <th>Date of Joining</th>
+                <th>Gender</th>
+                <th>Salary</th>
+            </tr>
+            <%
+                for (Employee e : list) {
+            %>
+            <tr>
+                <td><%= e.getId() %></td>
+                <td><%= e.getName() %></td>
+                <td><%= e.getDoj() %></td>
+                <td><%= e.getGender() %></td>
+                <td><%= e.getSalary() %></td>
+            </tr>
+            <% } %>
+        </table>
+    <%
+            }
+        }
+    %>
+</body>
+</html>

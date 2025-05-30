@@ -1,0 +1,257 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="java.util.*, java.text.*" %>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Employee Salary Management System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: #f0f0f0;
+            color: #333;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+    </style>
+</head>
+
+
+<body>
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-content">
+            <div class="spinner"></div>
+            <p>Loading Employee Management System...</p>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Header Section -->
+        <div class="header">
+            <h1>Employee Salary Management System</h1>
+            <p>Comprehensive Database Management Solution</p>
+            <p class="subtitle">Streamline your HR operations with advanced employee management tools</p>
+            
+            <div class="stats-bar">
+                <div class="stat-item">
+                    <span class="stat-number" id="currentDate"><%= new SimpleDateFormat("dd").format(new Date()) %></span>
+                    <span class="stat-label"><%= new SimpleDateFormat("MMM yyyy").format(new Date()) %></span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">5</span>
+                    <span class="stat-label">Active Modules</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Success/Error Messages -->
+        <div class="success-message" id="successMessage"></div>
+        <div class="error-message" id="errorMessage"></div>
+        
+        <!-- Main Navigation Menu -->
+        <div class="nav-menu">
+            <div class="nav-card" onclick="navigateToPage('empadd.jsp')">
+                <span class="icon">📝</span>
+                <h3>Add Employee</h3>
+                <p>Register new employees with complete personal and professional details</p>
+                <div class="action-hint">Click to add new employee →</div>
+            </div>
+            
+            <div class="nav-card" onclick="navigateToPage('empupdate.jsp')">
+                <span class="icon">✏️</span>
+                <h3>Update Employee</h3>
+                <p>Modify existing employee information and salary details</p>
+                <div class="action-hint">Click to update employee →</div>
+            </div>
+            
+            <div class="nav-card" onclick="navigateToPage('empdelete.jsp')">
+                <span class="icon">🗑️</span>
+                <h3>Delete Employee</h3>
+                <p>Remove employee records from the database securely</p>
+                <div class="action-hint">Click to delete employee →</div>
+            </div>
+            
+            <div class="nav-card" onclick="navigateToPage('empdisplay.jsp')">
+                <span class="icon">👁️</span>
+                <h3>Display Employee</h3>
+                <p>View comprehensive employee details and information</p>
+                <div class="action-hint">Click to view employee →</div>
+            </div>
+            
+            <div class="nav-card" onclick="navigateToPage('reports.jsp')">
+                <span class="icon">📊</span>
+                <h3>Generate Reports</h3>
+                <p>Create detailed reports based on various criteria and filters</p>
+                <div class="action-hint">Click to generate reports →</div>
+            </div>
+            
+            <div class="nav-card" onclick="showAllEmployees()">
+                <span class="icon">📋</span>
+                <h3>View All Employees</h3>
+                <p>Display complete list of all registered employees</p>
+                <div class="action-hint">Click to view all →</div>
+            </div>
+        </div>
+        
+      
+        
+        <!-- Footer -->
+        <div class="footer">
+            <p>&copy; <%= new Date().getYear() + 1900 %> Employee Salary Management System</p>
+            <p>Built with Java EE, JSP, JDBC, and MySQL</p>
+            <p>Last Updated: <%= new SimpleDateFormat("MMMM dd, yyyy 'at' HH:mm").format(new Date()) %></p>
+        </div>
+    </div>
+
+    <script>
+        // Show loading overlay on page load
+        window.addEventListener('load', function() {
+            document.getElementById('loadingOverlay').style.display = 'flex';
+            
+            // Hide loading overlay after a short delay
+            setTimeout(function() {
+                document.getElementById('loadingOverlay').style.display = 'none';
+                loadEmployeeCount();
+            }, 1000);
+        });
+        
+        // Navigation function
+        function navigateToPage(page) {
+            showLoading();
+            
+            // Add a small delay for smooth transition
+            setTimeout(function() {
+                window.location.href = page;
+            }, 500);
+        }
+        
+        // Show all employees in a popup or new page
+        function showAllEmployees() {
+            showLoading();
+            
+            // You can either redirect to a dedicated page or open a modal
+            setTimeout(function() {
+                // Option 1: Redirect to a dedicated page
+                window.location.href = 'emplist.jsp';
+                
+                // Option 2: Open in new window (uncomment if preferred)
+                // window.open('emplist.jsp', '_blank', 'width=1000,height=600');
+            }, 500);
+        }
+        
+        // Show loading overlay
+        function showLoading() {
+            document.getElementById('loadingOverlay').style.display = 'flex';
+        }
+        
+        // Hide loading overlay
+        function hideLoading() {
+            document.getElementById('loadingOverlay').style.display = 'none';
+        }
+        
+        // Load employee count (you'll replace this with actual AJAX call)
+        function loadEmployeeCount() {
+            // This would be an AJAX call to your DisplayEmployeeServlet or a dedicated count servlet
+            // For now, we'll simulate it
+            
+            // Example AJAX call (uncomment and modify for your actual implementation):
+            /*
+            fetch('EmployeeCountServlet')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('totalEmployees').textContent = data.count;
+                })
+                .catch(error => {
+                    console.error('Error loading employee count:', error);
+                    document.getElementById('totalEmployees').textContent = '---';
+                });
+            */
+            
+            // Simulated count for demo
+            document.getElementById('totalEmployees').textContent = '124';
+        }
+        
+        // Show success message
+        function showSuccessMessage(message) {
+            const successEl = document.getElementById('successMessage');
+            successEl.textContent = message;
+            successEl.style.display = 'block';
+            
+            setTimeout(function() {
+                successEl.style.display = 'none';
+            }, 5000);
+        }
+        
+        // Show error message
+        function showErrorMessage(message) {
+            const errorEl = document.getElementById('errorMessage');
+            errorEl.textContent = message;
+            errorEl.style.display = 'block';
+            
+            setTimeout(function() {
+                errorEl.style.display = 'none';
+            }, 5000);
+        }
+        
+        // Check URL parameters for messages
+        window.addEventListener('load', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            
+            if (urlParams.get('success')) {
+                showSuccessMessage(decodeURIComponent(urlParams.get('success')));
+            }
+            
+            if (urlParams.get('error')) {
+                showErrorMessage(decodeURIComponent(urlParams.get('error')));
+            }
+        });
+        
+        // Add smooth scrolling for better UX
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+        
+        // Add keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            if (e.altKey) {
+                switch(e.key) {
+                    case '1':
+                        navigateToPage('empadd.jsp');
+                        break;
+                    case '2':
+                        navigateToPage('empupdate.jsp');
+                        break;
+                    case '3':
+                        navigateToPage('empdelete.jsp');
+                        break;
+                    case '4':
+                        navigateToPage('empdisplay.jsp');
+                        break;
+                    case '5':
+                        navigateToPage('reports.jsp');
+                        break;
+                }
+            }
+        });
+        
+        // Add hover effects for better interactivity
+        document.querySelectorAll('.nav-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-8px) scale(1.02)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+    </script>
+</body>
+</html>

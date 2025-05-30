@@ -1,0 +1,399 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="java.util.*, java.text.*" %>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Salary Management System</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            background-color: #f0f4f8;
+            color: #333;
+        }
+
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            z-index: 9999;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .loading-content {
+            text-align: center;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 6px solid #ccc;
+            border-top: 6px solid #007bff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .container {
+            padding: 40px 20px;
+            max-width: 1200px;
+            margin: auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 0.2em;
+            color: #007bff;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            margin: 0;
+            color: #555;
+        }
+
+        .subtitle {
+            margin-top: 8px;
+            color: #888;
+            font-size: 0.95em;
+        }
+
+        .stats-bar {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 20px;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 10px 20px;
+            background: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .stat-number {
+            font-size: 2em;
+            font-weight: bold;
+            color: #007bff;
+        }
+
+        .stat-label {
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        .success-message,
+        .error-message {
+            text-align: center;
+            margin: 10px auto;
+            max-width: 600px;
+        }
+
+        .nav-menu {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 40px 0;
+        }
+
+        .nav-card {
+            background: #fff;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .nav-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.1);
+        }
+
+        .icon {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .nav-card h3 {
+            margin: 0;
+            color: #007bff;
+        }
+
+        .nav-card p {
+            font-size: 0.95em;
+            color: #666;
+        }
+
+        .action-hint {
+            margin-top: 8px;
+            font-size: 0.8em;
+            color: #888;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            font-size: 0.9em;
+            color: #777;
+        }
+        body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(to bottom right, #e3f2fd, #bbdefb);
+}
+
+.container {
+    padding: 30px;
+    max-width: 1200px;
+    margin: auto;
+}
+
+.header {
+    text-align: center;
+    padding: 20px;
+    background-color: #1565c0;
+    color: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.header h1 {
+    margin: 10px 0;
+    font-size: 36px;
+}
+
+.header p.subtitle {
+    font-size: 16px;
+    margin-top: 5px;
+    color: #cfd8dc;
+}
+
+.stats-bar {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.stat-item {
+    margin: 0 15px;
+    text-align: center;
+}
+
+.stat-number {
+    font-size: 28px;
+    font-weight: bold;
+    color: #fff;
+}
+
+.stat-label {
+    font-size: 14px;
+    color: #e3f2fd;
+}
+
+.nav-menu {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin-top: 40px;
+}
+
+.nav-card {
+    background-color: #ffffff;
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.nav-card:hover {
+    transform: scale(1.05);
+    background-color: #e3f2fd;
+}
+
+.nav-card h3 {
+    font-size: 22px;
+    margin-bottom: 10px;
+    color: #0d47a1;
+    border-bottom: 2px solid #90caf9;
+    padding-bottom: 5px;
+}
+
+.icon {
+    font-size: 30px;
+}
+
+.action-hint {
+    margin-top: 10px;
+    font-size: 13px;
+    color: #555;
+    font-style: italic;
+}
+
+.footer {
+    text-align: center;
+    margin-top: 50px;
+    color: #333;
+    font-size: 14px;
+}
+
+.success-message, .error-message {
+    text-align: center;
+    font-size: 16px;
+    margin: 20px 0;
+}
+
+.success-message {
+    color: green;
+}
+
+.error-message {
+    color: red;
+}
+
+.loading-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+}
+
+.loading-content {
+    background: white;
+    padding: 30px 40px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    text-align: center;
+}
+
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid #ccc;
+    border-top-color: #1565c0;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 15px auto;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+        
+    </style>
+    <script>
+        function navigateToPage(page) {
+            document.getElementById('loadingOverlay').style.display = 'flex';
+            setTimeout(function () {
+                window.location.href = page;
+            }, 1000);
+        }
+    </script>
+</head>
+<body>
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-content">
+            <div class="spinner"></div>
+            <p>Loading Employee Management System...</p>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Header Section -->
+        <div class="header">
+            <h1>Employee Salary Management System</h1>
+            <p>Comprehensive Database Management Solution</p>
+            <p class="subtitle">Streamline your HR operations with advanced employee management tools</p>
+            
+            <div class="stats-bar">
+                <div class="stat-item">
+                    <span class="stat-number" id="currentDate"><%= new SimpleDateFormat("dd").format(new Date()) %></span>
+                    <span class="stat-label"><%= new SimpleDateFormat("MMM yyyy").format(new Date()) %></span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">5</span>
+                    <span class="stat-label">Active Modules</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Success/Error Messages -->
+        <div class="success-message" id="successMessage"></div>
+        <div class="error-message" id="errorMessage"></div>
+
+        <!-- Navigation Menu -->
+        <div class="nav-menu">
+            <div class="nav-card" onclick="navigateToPage('empadd.jsp')">
+                <span class="icon">📝</span>
+                <h3>Add Employee</h3>
+                <p>Register new employees with personal and professional details</p>
+                <div class="action-hint">Click to add</div>
+            </div>
+
+            <div class="nav-card" onclick="navigateToPage('empupdate.jsp')">
+                <span class="icon">🔄</span>
+                <h3>Update Employee</h3>
+                <p>Edit existing employee data and salary details</p>
+                <div class="action-hint">Click to update</div>
+            </div>
+
+            <div class="nav-card" onclick="navigateToPage('empdelete.jsp')">
+                <span class="icon">❌</span>
+                <h3>Delete Employee</h3>
+                <p>Remove employee records from the system</p>
+                <div class="action-hint">Click to delete</div>
+            </div>
+
+            <div class="nav-card" onclick="navigateToPage('empdisplay.jsp')">
+                <span class="icon">📄</span>
+                <h3>Display Employees</h3>
+                <p>View all employee data in a detailed format</p>
+                <div class="action-hint">Click to view</div>
+            </div>
+
+            <div class="nav-card" onclick="navigateToPage('empreport.jsp')">
+                <span class="icon">📊</span>
+                <h3>Generate Reports</h3>
+                <p>View employee reports by salary, service, or name</p>
+                <div class="action-hint">Click to report</div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p>&copy; 2025 Employee Salary Management System</p>
+            <p>Developed by Sweekrithi Shetty</p>
+        </div>
+    </div>
+</body>
+</html>

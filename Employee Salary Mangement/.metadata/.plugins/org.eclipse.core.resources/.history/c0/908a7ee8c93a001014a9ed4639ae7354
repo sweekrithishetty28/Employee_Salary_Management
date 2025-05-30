@@ -1,0 +1,126 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="java.util.*, java.text.*" %>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Salary Management System</title>
+    <style>
+        /* [Include your complete CSS here - already pasted above. Truncated here for brevity.] */
+        /* Use the full CSS you already provided without any change */
+    </style>
+    <script>
+        function navigateToPage(page) {
+            document.getElementById('loadingOverlay').style.display = 'flex';
+            setTimeout(function () {
+                window.location.href = page;
+            }, 1000);
+        }
+    </script>
+</head>
+<body>
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-content">
+            <div class="spinner"></div>
+            <p>Loading Employee Management System...</p>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Header Section -->
+        <div class="header">
+            <h1>Employee Salary Management System</h1>
+            <p>Comprehensive Database Management Solution</p>
+            <p class="subtitle">Streamline your HR operations with advanced employee management tools</p>
+            
+            <div class="stats-bar">
+                <div class="stat-item">
+                    <span class="stat-number" id="currentDate"><%= new SimpleDateFormat("dd").format(new Date()) %></span>
+                    <span class="stat-label"><%= new SimpleDateFormat("MMM yyyy").format(new Date()) %></span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">5</span>
+                    <span class="stat-label">Active Modules</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Success/Error Messages -->
+        <div class="success-message" id="successMessage"></div>
+        <div class="error-message" id="errorMessage"></div>
+
+        <!-- Navigation Menu -->
+        <div class="nav-menu">
+            <div class="nav-card" onclick="navigateToPage('empadd.jsp')">
+                <span class="icon">📝</span>
+                <h3>Add Employee</h3>
+                <p>Register new employees with personal and professional details</p>
+                <div class="action-hint">Click to add</div>
+            </div>
+
+            <div class="nav-card" onclick="navigateToPage('empupdate.jsp')">
+                <span class="icon">🔄</span>
+                <h3>Update Employee</h3>
+                <p>Edit existing employee data and salary details</p>
+                <div class="action-hint">Click to update</div>
+            </div>
+
+            <div class="nav-card" onclick="navigateToPage('empdelete.jsp')">
+                <span class="icon">❌</span>
+                <h3>Delete Employee</h3>
+                <p>Remove employee records from the system</p>
+                <div class="action-hint">Click to delete</div>
+            </div>
+
+            <div class="nav-card" onclick="navigateToPage('empdisplay.jsp')">
+                <span class="icon">📄</span>
+                <h3>Display Employees</h3>
+                <p>View all employee data in a detailed format</p>
+                <div class="action-hint">Click to view</div>
+            </div>
+
+            <div class="nav-card" onclick="navigateToPage('empreport.jsp')">
+                <span class="icon">📊</span>
+                <h3>Generate Reports</h3>
+                <p>View employee reports by salary, service, or name</p>
+                <div class="action-hint">Click to report</div>
+            </div>
+        </div>
+
+        <!-- Features Section -->
+        <div class="features-section">
+            <h2 style="text-align: center; color: #4a5568;">Key Features</h2>
+            <div class="features-grid">
+                <div class="feature-item">
+                    <div class="feature-icon">✅</div>
+                    <div class="feature-title">Secure Data</div>
+                    <div class="feature-desc">All employee records are stored safely using secured JDBC methods.</div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">📂</div>
+                    <div class="feature-title">Organized Modules</div>
+                    <div class="feature-desc">Each operation is handled separately for better MVC architecture compliance.</div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">📈</div>
+                    <div class="feature-title">Reports & Insights</div>
+                    <div class="feature-desc">Generate analytical reports to help in salary and performance decisions.</div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">⚙️</div>
+                    <div class="feature-title">Easy Maintenance</div>
+                    <div class="feature-desc">Easily update, delete, or add data with intuitive navigation.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p>&copy; 2025 Employee Salary Management System</p>
+            <p>Developed by Manvitha Shetty</p>
+        </div>
+    </div>
+</body>
+</html>

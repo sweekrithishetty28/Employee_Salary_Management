@@ -1,0 +1,60 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page import="java.util.List" %>
+<%@ page import="com.model.Employee" %>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Employee List</title>
+    <style>
+        table { border-collapse: collapse; width: 80%; margin: 20px auto; }
+        th, td { border: 1px solid #aaa; padding: 10px; text-align: left; }
+        th { background-color: #4CAF50; color: white; }
+        .message { text-align: center; margin-top: 20px; color: red; }
+    </style>
+</head>
+<body>
+<h2 style="text-align:center;">Employee List</h2>
+
+<%
+    List<Employee> employeeList = (List<Employee>) request.getAttribute("employeeList");
+    String message = (String) request.getAttribute("message");
+
+    if (message != null) {
+%>
+    <p class="message"><%= message %></p>
+<%
+    }
+
+    if (employeeList == null || employeeList.isEmpty()) {
+%>
+    <p class="message">No employees found.</p>
+<%
+    } else {
+%>
+    <table>
+        <tr>
+            <th>Emp No</th>
+            <th>Name</th>
+            <th>Date of Joining</th>
+            <th>Gender</th>
+            <th>Salary</th>
+        </tr>
+        <%
+            for (Employee emp : employeeList) {
+        %>
+        <tr>
+            <td><%= emp.getId() %></td>
+            <td><%= emp.getName() %></td>
+            <td><%= emp.getDoj() %></td>
+            <td><%= emp.getGender() %></td>
+            <td><%= emp.getSalary() %></td>
+        </tr>
+        <%
+            }
+        %>
+    </table>
+<%
+    }
+%>
+</body>
+</html>

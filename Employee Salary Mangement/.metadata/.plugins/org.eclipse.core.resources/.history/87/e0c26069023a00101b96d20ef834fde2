@@ -1,0 +1,31 @@
+package com.servlet;
+
+import javax.servlet.*;
+import javax.servlet.http.*;
+import java.io.IOException;
+import java.util.List;
+import com.dao.EmployeeDAO;
+import com.model.Employee;
+
+public class DeleteEmployeeServlet extends HttpServlet {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        try {
+            int empno = Integer.parseInt(request.getParameter("empno"));
+            EmployeeDAO.deleteEmployee(empno);
+            request.setAttribute("message", "Employee deleted successfully.");
+        } catch (Exception e) {
+            request.setAttribute("message", "Error deleting employee: " + e.getMessage());
+        }
+
+        try {
+            List<Employee> list = EmployeeDAO.getAllEmployees();
+            request.setAttribute("employeeList", list);
+        } catch (Exception e) {
+            request.setAttribute("message", "Error fetching employee list: " + e.getMessage());
+        }
+
+        RequestDispatcher rd = request.getRequestDispatcher("empdelete.jsp");
+        rd.forward(request, response);
+    }
+}

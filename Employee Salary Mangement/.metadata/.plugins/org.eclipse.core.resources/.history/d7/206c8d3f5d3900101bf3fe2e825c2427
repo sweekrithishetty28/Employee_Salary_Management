@@ -1,0 +1,39 @@
+<%@ page import="java.util.List" %>
+<%@ page import="com.model.Employee" %>
+<html>
+<head>
+    <title>Report Results</title>
+</head>
+<body>
+    <h2>Report Results</h2>
+    <table border="1">
+        <tr>
+            <th>Emp No</th>
+            <th>Name</th>
+            <th>Date of Joining</th>
+            <th>Gender</th>
+            <th>Salary</th>
+        </tr>
+        <%
+            List<Employee> list = (List<Employee>) request.getAttribute("reportList");
+            if (list != null && !list.isEmpty()) {
+                for (Employee e : list) {
+        %>
+            <tr>
+                <td><%= e.getId() %></td>
+                <td><%= e.getName() %></td>
+                <td><%= e.getDoj() %></td>
+                <td><%= e.getGender() %></td>
+                <td><%= e.getSalary() %></td>
+            </tr>
+        <%
+                }
+            } else {
+        %>
+            <tr><td colspan="5">No records found.</td></tr>
+        <%
+            }
+        %>
+    </table>
+</body>
+</html>

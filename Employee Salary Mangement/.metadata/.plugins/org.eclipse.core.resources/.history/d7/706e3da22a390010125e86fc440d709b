@@ -1,0 +1,103 @@
+package com.dao;
+
+import java.sql.Connection;
+
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;  // ✅ This line is important
+import com.model.Employee;
+
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+
+import com.model.Employee;
+
+public class EmployeeDAO {
+    private String jdbcURL = "jdbc:mysql://localhost:3306/employeedb";
+    private String jdbcUsername = "root";
+    private String jdbcPassword = ""; // No password
+
+    private static final String INSERT_EMP_SQL =
+        "INSERT INTO Employee (Empno, EmpName, DoJ, Gender, Bsalary) VALUES (?, ?, ?, ?, ?)";
+
+    protected Connection getConnection() {
+        Connection connection = null;
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            connection = DriverManager.getConnection(jdbcURL, jdbcUsername, jdbcPassword);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return connection;
+    }
+    public void insertEmployee(Employee emp) {
+        try (Connection connection = getConnection();
+             PreparedStatement ps = connection.prepareStatement(INSERT_EMP_SQL)) {
+
+            ps.setInt(1, emp.getEmpno());
+            ps.setString(2, emp.getEmpName());
+            ps.setString(3, emp.getDoj());
+            ps.setString(4, emp.getGender());
+            ps.setDouble(5, emp.getBsalary());
+
+            ps.executeUpdate();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("Error inserting employee.", e);
+        }
+    }
+
+    public boolean updateEmployee(Employee emp) {
+        String UPDATE_EMP_SQL = "UPDATE Employee SET EmpName=?, DoJ=?, Gender=?, Bsalary=? WHERE Empno=?";
+        try (Connection connection = getConnection();
+             PreparedStatement ps = connection.prepareStatement(UPDATE_EMP_SQL)) {
+
+            ps.setString(1, emp.getEmpName());
+            ps.setString(2, emp.getDoj());
+            ps.setString(3, emp.getGender());
+            ps.setDouble(4, emp.getBsalary());
+            ps.setInt(5, emp.getEmpno());
+
+            return ps.executeUpdate() > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public Employee getEmployeeById(int empno) {
+        String SELECT_SQL = "SELECT * FROM Employee WHERE Empno=?";
+        Employee emp = null;
+
+        try (Connection connection = getConnection()) {
+            if (connection == null) {
+                System.out.println("Failed to connect to database.");
+                return null;
+            }
+
+            try (PreparedStatement ps = connection.prepareStatement(SELECT_SQL)) {
+                ps.setInt(1, empno);
+                ResultSet rs = ps.executeQuery();
+
+                if (rs.next()) {
+                    String name = rs.getString("EmpName");
+                    String doj = rs.getString("DoJ");
+                    String gender = rs.getString("Gender");
+                    double salary = rs.getDouble("Bsalary");
+
+                    emp = new Employee(empno, name, doj, gender, salary);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return emp;
+    }
+
+    
+
+    	
+
+}

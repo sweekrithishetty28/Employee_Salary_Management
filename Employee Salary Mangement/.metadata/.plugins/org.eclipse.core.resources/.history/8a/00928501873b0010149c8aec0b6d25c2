@@ -1,0 +1,98 @@
+<%@ page import="java.util.List" %>
+<%@ page import="com.model.Employee" %>
+<%
+String action = request.getParameter("action");
+List<Employee> employees = (List<Employee>) session.getAttribute("filteredEmployees");
+
+if (employees == null) {
+out.println("<h3>No data found. Please generate a report first.</h3>");
+return;
+}
+%>
+<html>
+<head>
+    <title>Report Results</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: lightblue;
+            padding: 20px;
+        }
+        
+        h2 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        p {
+            margin: 10px 0;
+            font-size: 16px;
+        }
+        
+        table {
+            width: 100%;
+            border: 1px solid #000;
+            border-collapse: collapse;
+            background-color: white;
+            margin: 20px 0;
+        }
+        
+        th, td {
+            border: 1px solid #000;
+            padding: 10px;
+            text-align: left;
+        }
+        
+        th {
+            background-color: #f0f0f0;
+            font-weight: bold;
+        }
+        
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        
+        a {
+            color: blue;
+            text-decoration: none;
+            font-size: 16px;
+        }
+        
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+<h2>Report Results</h2>
+
+<p>Filter Type: <b><%= action %></b></p>
+
+<table border="1" cellpadding="10" cellspacing="0">
+<tr>
+<th>Emp No</th>
+<th>Name</th>
+<th>Date of Joining</th>
+<th>Gender</th>
+<th>Salary</th>
+</tr>
+<%
+for(Employee e : employees) {
+%>
+<tr>
+<td><%= e.getId() %></td>
+<td><%= e.getName() %></td>
+<td><%= e.getDoj() %></td>
+<td><%= e.getGender() %></td>
+<td><%= e.getSalary() %></td>
+</tr>
+<%
+}
+%>
+</table>
+
+<a href="report_form.jsp?action=<%=action%>">← Back to Filter</a>
+
+</body>
+</html>

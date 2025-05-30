@@ -1,0 +1,58 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Employee Salary Management</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f2f2f2;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            margin: 50px auto;
+            padding: 30px;
+            background: #fff;
+            border-radius: 10px;
+            max-width: 600px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .nav {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        .nav a {
+            text-decoration: none;
+            padding: 12px 20px;
+            background-color: #4CAF50;
+            color: white;
+            text-align: center;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+        .nav a:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Employee Salary Management System</h1>
+        <div class="nav">
+            <a href="empadd.jsp">➕ Add Employee</a>
+            <a href="empdisplay.jsp">📋 Display All Employees</a>
+            <a href="empupdate.jsp">✏️ Update Employee</a>
+            <a href="empdelete.jsp">❌ Delete Employee</a>
+            <a href="report_form.jsp">📊 Generate Reports</a>
+        </div>
+    </div>
+</body>
+</html>

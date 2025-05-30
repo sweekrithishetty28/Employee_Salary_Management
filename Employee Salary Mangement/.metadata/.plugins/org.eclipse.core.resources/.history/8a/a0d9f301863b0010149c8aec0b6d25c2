@@ -1,0 +1,192 @@
+<%@ page import="java.util.List" %>
+<%@ page import="com.model.Employee" %>
+<%
+String action = request.getParameter("action");
+List<Employee> employees = (List<Employee>) session.getAttribute("filteredEmployees");
+
+if (employees == null) {
+    out.println("<h3>No data found. Please generate a report first.</h3>");
+    return;
+}
+%>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Report Results</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+        }
+        
+        h2 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #007bff;
+        }
+        
+        .filter-info {
+            background-color: #e9ecef;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 25px;
+            border-left: 4px solid #007bff;
+        }
+        
+        .filter-info p {
+            margin: 0;
+            font-size: 16px;
+            color: #495057;
+        }
+        
+        .table-container {
+            overflow-x: auto;
+            margin-bottom: 30px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        th {
+            background-color: #007bff;
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: bold;
+            border-bottom: 2px solid #0056b3;
+        }
+        
+        td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #dee2e6;
+        }
+        
+        tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+        
+        tr:hover {
+            background-color: #e9ecef;
+            transition: background-color 0.3s ease;
+        }
+        
+        .back-link {
+            display: inline-block;
+            padding: 12px 25px;
+            background-color: #6c757d;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+            font-weight: bold;
+        }
+        
+        .back-link:hover {
+            background-color: #5a6268;
+        }
+        
+        .employee-count {
+            text-align: right;
+            margin-bottom: 15px;
+            color: #6c757d;
+            font-style: italic;
+        }
+        
+        .no-data {
+            text-align: center;
+            color: #dc3545;
+            background-color: #f8d7da;
+            padding: 20px;
+            border-radius: 5px;
+            border: 1px solid #f5c6cb;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            table {
+                font-size: 14px;
+            }
+            
+            th, td {
+                padding: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>📊 Employee Report Results</h2>
+        
+        <div class="filter-info">
+            <p><strong>Filter Applied:</strong> <%= action != null ? action.toUpperCase() : "ALL" %></p>
+        </div>
+        
+        <div class="employee-count">
+            <strong>Total Records Found: <%= employees.size() %></strong>
+        </div>
+        
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>👤 Emp No</th>
+                        <th>📛 Name</th>
+                        <th>📅 Date of Joining</th>
+                        <th>⚧ Gender</th>
+                        <th>💰 Salary</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <%
+                    for(Employee e : employees) {
+                    %>
+                    <tr>
+                        <td><strong><%= e.getId() %></strong></td>
+                        <td><%= e.getName() %></td>
+                        <td><%= e.getDoj() %></td>
+                        <td><%= e.getGender() %></td>
+                        <td>₹ <%= String.format("%,d", e.getSalary()) %></td>
+                    </tr>
+                    <%
+                    }
+                    %>
+                </tbody>
+            </table>
+        </div>
+        
+        <div style="text-align: center;">
+            <a href="report_form.jsp?action=<%=action%>" class="back-link">
+                ← Back to Filter Options
+            </a>
+        </div>
+    </div>
+</body>
+</html>

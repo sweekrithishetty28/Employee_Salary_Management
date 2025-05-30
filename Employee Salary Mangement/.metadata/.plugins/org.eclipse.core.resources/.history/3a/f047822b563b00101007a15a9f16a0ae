@@ -1,0 +1,69 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" %>
+<%@ page import="java.util.*, com.model.Employee, com.dao.EmployeeDAO" %>
+<%@ page import="javax.servlet.http.*, javax.servlet.*" %>
+<%
+    String action = request.getParameter("action");
+    List<Employee> reportList = null;
+
+    try {
+        if ("NameFilter".equals(action)) {
+            String startsWith = request.getParameter("startsWith");
+            reportList = EmployeeDAO.getEmployeesByNamePrefix(startsWith);
+        } else if ("ServiceFilter".equals(action)) {
+            int years = Integer.parseInt(request.getParameter("years"));
+            reportList = EmployeeDAO.getEmployeesByServiceYears(years);
+        } else if ("SalaryFilter".equals(action)) {
+            double salary = Double.parseDouble(request.getParameter("salary"));
+            reportList = EmployeeDAO.getEmployeesBySalary(salary);
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+%>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Employee Report</title>
+    <style>
+        body { font-family: Arial; margin: 30px; }
+        table { width: 80%; margin: auto; border-collapse: collapse; }
+        th, td { padding: 12px; border: 1px solid #ccc; text-align: left; }
+        th { background-color: #f0f0f0; }
+    </style>
+</head>
+<body>
+    <h2 align="center">Employee Report Result</h2>
+    <%
+        if (reportList != null && !reportList.isEmpty()) {
+    %>
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Salary</th>
+                <th>Date of Joining</th>
+                <th>Gender</th>
+            </tr>
+            <%
+                for (Employee emp : reportList) {
+            %>
+            <tr>
+                <td><%= emp.getId() %></td>
+                <td><%= emp.getName() %></td>
+                <td><%= emp.getSalary() %></td>
+                <td><%= emp.getDoj() %></td>
+                <td><%= emp.getGender() %></td>
+            </tr>
+            <%
+                }
+            %>
+        </table>
+    <%
+        } else {
+    %>
+        <p align="center">No employees found matching the criteria.</p>
+    <%
+        }
+    %>
+</body>
+</html>

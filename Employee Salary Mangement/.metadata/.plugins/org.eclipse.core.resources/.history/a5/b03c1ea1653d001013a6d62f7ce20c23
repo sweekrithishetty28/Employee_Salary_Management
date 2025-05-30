@@ -1,0 +1,67 @@
+<%@ page import="java.util.List" %>
+<%@ page import="com.model.Employee" %>
+<%
+String action = request.getParameter("action");
+List<Employee> employees = (List<Employee>) session.getAttribute("filteredEmployees");
+
+if (employees == null) {
+    out.println("<h3>No data found. Please generate a report first.</h3>");
+    return;
+}
+%>
+<html>
+<head>
+    <title>Report Results</title>
+    <style>
+        /* Your existing styles here */
+        .back-link {
+            display: inline-block;
+            padding: 8px 12px;
+            background-color: #f0f0f0;
+            color: #333;
+            text-decoration: none;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-weight: bold;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .back-link:hover {
+            background-color: #ddd;
+            color: #000;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>Report Results</h2>
+
+    <p>Filter Type: <b><%= action %></b></p>
+
+    <table border="1" cellpadding="10" cellspacing="0">
+        <tr>
+            <th>Emp No</th>
+            <th>Name</th>
+            <th>Date of Joining</th>
+            <th>Gender</th>
+            <th>Salary</th>
+        </tr>
+        <%
+        for(Employee e : employees) {
+        %>
+        <tr>
+            <td><%= e.getId() %></td>
+            <td><%= e.getName() %></td>
+            <td><%= e.getDoj() %></td>
+            <td><%= e.getGender() %></td>
+            <td><%= e.getSalary() %></td>
+        </tr>
+        <%
+        }
+        %>
+    </table>
+
+    <a href="report.jsp?action=<%=action%>" class="back-link">&#8592; Back to Filter</a>
+</div>
+</body>
+</html>

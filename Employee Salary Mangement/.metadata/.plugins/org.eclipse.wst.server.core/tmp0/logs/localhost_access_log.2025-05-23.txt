@@ -1,0 +1,14 @@
+127.0.0.1 - - [23/May/2025:16:24:10 +0530] "GET / HTTP/1.1" 404 752
+0:0:0:0:0:0:0:1 - - [23/May/2025:16:24:12 +0530] "GET /EmployeeWebApp/empupdate.jsp HTTP/1.1" 200 1168
+0:0:0:0:0:0:0:1 - - [23/May/2025:16:24:41 +0530] "POST /EmployeeWebApp/updateEmployee HTTP/1.1" 500 3140
+0:0:0:0:0:0:0:1 - - [23/May/2025:16:25:06 +0530] "GET /EmployeeWebApp/empupdate.jsp HTTP/1.1" 200 1168
+0:0:0:0:0:0:0:1 - - [23/May/2025:16:25:06 +0530] "GET /favicon.ico HTTP/1.1" 404 763
+0:0:0:0:0:0:0:1 - - [23/May/2025:16:25:17 +0530] "POST /EmployeeWebApp/updateEmployee HTTP/1.1" 500 3140
+0:0:0:0:0:0:0:1 - - [23/May/2025:16:26:11 +0530] "GET /EmployeeWebApp/empupdate.jsp HTTP/1.1" 200 516
+0:0:0:0:0:0:0:1 - - [23/May/2025:16:26:28 +0530] "GET /EmployeeWebApp/empupdate.jsp HTTP/1.1" 200 516
+0:0:0:0:0:0:0:1 - - [23/May/2025:16:26:29 +0530] "GET /favicon.ico HTTP/1.1" 404 763
+0:0:0:0:0:0:0:1 - - [23/May/2025:16:27:52 +0530] "GET /EmployeeWebApp/empupdate.jsp HTTP/1.1" 200 547
+0:0:0:0:0:0:0:1 - - [23/May/2025:16:27:52 +0530] "GET /favicon.ico HTTP/1.1" 404 763
+0:0:0:0:0:0:0:1 - - [23/May/2025:16:28:17 +0530] "GET /EmployeeWebApp/empupdate.jsp HTTP/1.1" 200 547
+127.0.0.1 - - [23/May/2025:16:41:28 +0530] "GET / HTTP/1.1" 404 752
+0:0:0:0:0:0:0:1 - - [23/May/2025:16:41:29 +0530] "GET /EmployeeWebApp/empupdate.jsp HTTP/1.1" 200 547

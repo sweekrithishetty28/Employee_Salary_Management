@@ -1,0 +1,228 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" import="java.util.Date, java.text.SimpleDateFormat"%>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Employee Salary Management System</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+        /* Make body use full width and height */
+        html, body {
+            margin: 0; padding: 0; height: 100%;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(to right, #e3f2fd, #bbdefb);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            width: 100vw;
+        }
+
+        body {
+            align-items: center;
+            justify-content: flex-start;
+            padding: 20px 0;
+            box-sizing: border-box;
+        }
+
+        .header {
+            background-color: #1565c0;
+            color: white;
+            padding: 25px 40px;
+            border-radius: 12px;
+            text-align: center;
+            width: 90vw;
+            max-width: 900px;
+            box-sizing: border-box;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+        }
+
+        .header p, .header .info {
+            margin-top: 10px;
+            font-size: 1.1rem;
+            color: #bbdefb;
+        }
+
+        .header .info {
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+
+        /* Container for nav cards */
+        .nav-container {
+            width: 90vw;
+            max-width: 900px;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            align-items: center;
+            flex-grow: 1; /* So footer is pushed to bottom */
+        }
+
+        /* Each row container */
+        .nav-row {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            width: 100%;
+            flex-wrap: nowrap;
+        }
+
+        /* Cards */
+        .nav-card {
+            background-color: white;
+            border-radius: 14px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            width: 220px;
+            height: 140px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-decoration: none;
+            color: #1565c0;
+            font-weight: 600;
+            font-size: 1.25rem;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            user-select: none;
+            border: 2px solid transparent;
+        }
+
+        .nav-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 10px 20px rgba(21, 101, 192, 0.4);
+            border-color: #1565c0;
+            color: #0d47a1;
+        }
+
+        /* Loading Overlay */
+        .loading-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .loading-content {
+            background: #fff;
+            padding: 30px 40px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 0 20px rgba(0,0,0,0.25);
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #ccc;
+            border-top: 4px solid #1565c0;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Responsive: wrap rows on smaller screens */
+        @media (max-width: 720px) {
+            .nav-row {
+                flex-wrap: wrap;
+                gap: 20px;
+                justify-content: center;
+            }
+
+            .nav-card {
+                width: 45vw;
+                max-width: 220px;
+                height: 120px;
+                font-size: 1.1rem;
+            }
+        }
+
+        /* Footer styling */
+        footer {
+            background-color: #1565c0;
+            color: white;
+            padding: 15px 40px;
+            border-radius: 12px 12px 0 0;
+            text-align: center;
+            width: 90vw;
+            max-width: 900px;
+            box-sizing: border-box;
+            margin-top: 40px;
+            font-size: 1rem;
+            user-select: none;
+        }
+    </style>
+</head>
+<body>
+
+<%
+    // Current date formatting
+    Date now = new Date();
+    SimpleDateFormat sdf = new SimpleDateFormat("EEEE, MMMM dd, yyyy");
+    String currentDate = sdf.format(now);
+
+    // Assuming employee name is stored in session attribute "employeeName"
+    String employeeName = (String) session.getAttribute("employeeName");
+    if(employeeName == null || employeeName.trim().isEmpty()) {
+        employeeName = "Guest User"; // fallback name
+    }
+%>
+
+<div class="header">
+    <h1>Employee Salary Management System</h1>
+    <p>Manage employee records, update details, and generate reports easily</p>
+    <div class="info">Date: <strong><%= currentDate %></strong></div>
+    <div class="info">Logged in as: <strong><%= employeeName %></strong></div>
+</div>
+
+<div class="nav-container">
+    <!-- First row: Add, Update, Delete -->
+    <div class="nav-row">
+        <a href="addEmployee.jsp" class="nav-card">Add Employee</a>
+        <a href="updateEmployee.jsp" class="nav-card">Update Employee</a>
+        <a href="deleteEmployee.jsp" class="nav-card">Delete Employee</a>
+    </div>
+
+    <!-- Second row: View, Reports -->
+    <div class="nav-row" style="max-width: 480px; justify-content: space-evenly;">
+        <a href="viewEmployees.jsp" class="nav-card">View Employees</a>
+        <a href="reports.jsp" class="nav-card">Reports</a>
+    </div>
+</div>
+
+<!-- Loading overlay -->
+<div class="loading-overlay" id="loadingOverlay">
+    <div class="loading-content">
+        <div class="spinner"></div>
+        <p>Loading, please wait...</p>
+    </div>
+</div>
+
+<footer>
+    &copy; <%= (new SimpleDateFormat("yyyy")).format(now) %> Employee Salary Management System. All rights reserved.
+</footer>
+
+<script>
+    // Show loading overlay on nav-card click
+    document.querySelectorAll('.nav-card').forEach(card => {
+        card.addEventListener('click', () => {
+            document.getElementById('loadingOverlay').style.display = 'flex';
+        });
+    });
+</script>
+
+</body>
+</html>

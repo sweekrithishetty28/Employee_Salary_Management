@@ -1,0 +1,44 @@
+<%@ page import="java.util.*, com.model.Employee" %>
+<html>
+<head><title>Employees</title></head>
+<body>
+    <h2>All Employees</h2>
+
+    <%
+        String message = (String) request.getAttribute("message");
+        if (message != null) {
+    %>
+        <p style="color:red;"><%= message %></p>
+    <%
+        }
+    %>
+
+    <table border="1" cellpadding="10" cellspacing="0">
+        <tr>
+            <th>Emp No</th>
+            <th>Name</th>
+            <th>Date of Joining</th>
+            <th>Gender</th>
+            <th>Salary</th>
+        </tr>
+        <%
+            List<Employee> employees = (List<Employee>) request.getAttribute("employeeList");
+            if (employees != null && !employees.isEmpty()) {
+                for (Employee emp : employees) {
+        %>
+        <tr>
+            <td><%= emp.getId() %></td>
+            <td><%= emp.getName() %></td>
+            <td><%= emp.getDoj() %></td>
+            <td><%= emp.getGender() %></td>
+            <td><%= emp.getSalary() %></td>
+        </tr>
+        <%
+                }
+            } else {
+        %>
+        <tr><td colspan="5">No employees found.</td></tr>
+        <% } %>
+    </table>
+</body>
+</html>

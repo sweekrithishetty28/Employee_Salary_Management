@@ -1,0 +1,79 @@
+package com.servlet;
+
+import com.dao.EmployeeDAO;
+import com.model.Employee;
+
+import javax.servlet.*;
+import javax.servlet.http.*;
+import java.io.IOException;
+import java.util.List;
+
+public class ReportServlet extends HttpServlet {
+
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String action = request.getParameter("action");
+        List<Employee> employees = null;
+
+        try {
+            if (action == null || action.isEmpty()) {
+                // No action provided, redirect to the report form page
+                response.sendRedirect("report_form.jsp");
+                return;
+            }
+
+            switch (action) {
+                case "NameFilter":
+                    String startsWith = request.getParameter("startsWith");
+                    if (startsWith == null) startsWith = "";
+                    employees = EmployeeDAO.getEmployeesByNamePrefix(startsWith.trim());
+                    break;
+
+                case "ServiceFilter":
+                    String yearsParam = request.getParameter("years");
+                    int years = 0;
+                    try {
+                        years = Integer.parseInt(yearsParam);
+                    } catch (NumberFormatException e) {
+                        years = 0; // You can handle invalid input differently if needed
+                    }
+                    employees = EmployeeDAO.getEmployeesByServiceYears(years);
+                    break;
+
+                case "SalaryFilter":
+                    String salaryParam = request.getParameter("salary");
+                    double salary = 0;
+                    try {
+                        salary = Double.parseDouble(salaryParam);
+                    } catch (NumberFormatException e) {
+                        salary = 0; // Handle invalid input if needed
+                    }
+                    employees = EmployeeDAO.getEmployeesBySalary(salary);
+                    break;
+
+                default:
+                    // Unknown action, redirect back to form or show error
+                    response.sendRedirect("report_form.jsp");
+                    return;
+            }
+
+            // Set the result list to request attribute for display
+            request.setAttribute("reportList", employees);
+
+            // Forward to the JSP that shows the results
+            RequestDispatcher rd = request.getRequestDispatcher("report_result.jsp");
+            rd.forward(request, response);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            // Redirect to error page in case of exceptions
+            response.sendRedirect("error.jsp");
+        }
+    }
+
+    // Optionally, implement doPost to forward to doGet
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        doGet(request, response);
+    }
+}

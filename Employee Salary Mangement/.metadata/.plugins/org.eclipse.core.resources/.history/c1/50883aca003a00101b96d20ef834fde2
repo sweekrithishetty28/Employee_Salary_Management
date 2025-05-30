@@ -1,0 +1,72 @@
+<%@ page import="java.util.*, com.model.Employee" %>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Delete Employee</title>
+    <style>
+        body { font-family: Arial; background-color: #eef; padding: 20px; }
+        h2, h3 { text-align: center; }
+        form {
+            background: #fff; padding: 20px; width: 400px;
+            margin: auto; border-radius: 10px; box-shadow: 0 0 10px #aaa;
+        }
+        input[type="number"], input[type="submit"] {
+            padding: 10px; margin: 10px 0; width: 100%;
+        }
+        table {
+            width: 80%; margin: 20px auto; border-collapse: collapse;
+        }
+        th, td {
+            padding: 10px; border: 1px solid #666; background: #fff;
+            text-align: center;
+        }
+        .message {
+            color: green; font-weight: bold; text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+<h2>Delete Employee Record</h2>
+<form method="post" action="DeleteEmployee">
+    <label>Enter Employee Number (Empno):</label>
+    <input type="number" name="empno" required>
+    <input type="submit" value="Delete Employee">
+</form>
+
+<% String msg = (String) request.getAttribute("message");
+   if (msg != null) { %>
+    <div class="message"><%= msg %></div>
+<% } %>
+
+<h3>Current Employee List</h3>
+<table>
+    <tr>
+        <th>Emp No</th>
+        <th>Name</th>
+        <th>Date of Joining</th>
+        <th>Gender</th>
+        <th>Salary</th>
+    </tr>
+    <%
+        List<Employee> empList = (List<Employee>) request.getAttribute("employeeList");
+        if (empList != null && !empList.isEmpty()) {
+            for (Employee emp : empList) {
+    %>
+    <tr>
+        <td><%= emp.getId() %></td>
+        <td><%= emp.getName() %></td>
+        <td><%= emp.getDoj() %></td>
+        <td><%= emp.getGender() %></td>
+        <td><%= emp.getSalary() %></td>
+    </tr>
+    <%
+            }
+        } else {
+    %>
+    <tr><td colspan="5">No employees found.</td></tr>
+    <% } %>
+</table>
+
+</body>
+</html>

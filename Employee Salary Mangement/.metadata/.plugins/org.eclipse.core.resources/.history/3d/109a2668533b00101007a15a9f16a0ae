@@ -1,0 +1,41 @@
+package com.servlet;
+
+import com.dao.EmployeeDao;
+import com.model.Employee;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.*;
+import java.io.IOException;
+import java.util.List;
+
+@WebServlet("/generateReport")
+public class ReportServlet extends HttpServlet {
+    private static final long serialVersionUID = 1L;
+
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        String nameStartsWith = request.getParameter("nameStartsWith");
+        String yearsOfServiceStr = request.getParameter("yearsOfService");
+        String salaryGreaterThanStr = request.getParameter("salaryGreaterThan");
+
+        Integer yearsOfService = null;
+        Double salaryGreaterThan = null;
+
+        try {
+            if (yearsOfServiceStr != null && !yearsOfServiceStr.trim().isEmpty()) {
+                yearsOfService = Integer.parseInt(yearsOfServiceStr.trim());
+            }
+            if (salaryGreaterThanStr != null && !salaryGreaterThanStr.trim().isEmpty()) {
+                salaryGreaterThan = Double.parseDouble(salaryGreaterThanStr.trim());
+            }
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+
+        List<Employee> reportList = EmployeeDao.getFilteredEmployees(nameStartsWith, yearsOfService, salaryGreaterThan);
+        request.setAttribute("reportList", reportList);
+        request.getRequestDispatcher("report_result.jsp").forward(request, response);
+    }
+}

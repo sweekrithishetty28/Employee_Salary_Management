@@ -1,0 +1,210 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" import="java.util.Date, java.text.SimpleDateFormat"%>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Employee Salary Management System</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            background: #f8fafc;
+            color: #334155;
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            flex: 1;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 12px;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            color: #64748b;
+            margin-bottom: 20px;
+        }
+
+        .date-info {
+            display: inline-block;
+            background: #e2e8f0;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            color: #475569;
+        }
+
+        .nav-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .nav-card {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 30px 20px;
+            text-align: center;
+            text-decoration: none;
+            color: #1e293b;
+            transition: all 0.2s ease;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            border-color: #3b82f6;
+        }
+
+        .nav-card h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #1e293b;
+        }
+
+        .loading-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .loading-content {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid #e2e8f0;
+            border-top: 3px solid #3b82f6;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .footer {
+            background: white;
+            border-top: 1px solid #e2e8f0;
+            padding: 20px;
+            text-align: center;
+            color: #64748b;
+            font-size: 0.9rem;
+            margin-top: auto;
+        }
+
+        @media (max-width: 600px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .nav-grid {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+            
+            .nav-card {
+                padding: 25px 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<%
+    // Current date formatting
+    Date now = new Date();
+    SimpleDateFormat sdf = new SimpleDateFormat("EEEE, MMMM dd, yyyy");
+    String currentDate = sdf.format(now);
+%>
+
+<div class="container">
+    <div class="header">
+        <h1>Employee Salary Management System</h1>
+        <p>Manage employee records, update details, and generate reports easily</p>
+        <div class="date-info">
+            <strong><%= currentDate %></strong>
+        </div>
+    </div>
+
+    <div class="nav-grid">
+        <a href="empadd.jsp" class="nav-card">
+            <h3>Add Employee</h3>
+        </a>
+        <a href="empupdate.jsp" class="nav-card">
+            <h3>Update Employee</h3>
+        </a>
+        <a href="empdelete.jsp" class="nav-card">
+            <h3>Delete Employee</h3>
+        </a>
+        <a href="empdisplay.jsp" class="nav-card">
+            <h3>View Employees</h3>
+        </a>
+        <a href="reports.jsp" class="nav-card">
+            <h3>Reports</h3>
+        </a>
+    </div>
+</div>
+
+<!-- Loading overlay -->
+<div class="loading-overlay" id="loadingOverlay">
+    <div class="loading-content">
+        <div class="spinner"></div>
+        <p>Loading, please wait...</p>
+    </div>
+</div>
+
+<div class="footer">
+    &copy; <%= (new SimpleDateFormat("yyyy")).format(now) %> Employee Salary Management System. All rights reserved.
+</div>
+
+<script>
+    // Show loading overlay on nav-card click
+    document.querySelectorAll('.nav-card').forEach(card => {
+        card.addEventListener('click', () => {
+            document.getElementById('loadingOverlay').style.display = 'flex';
+        });
+    });
+</script>
+
+</body>
+</html>

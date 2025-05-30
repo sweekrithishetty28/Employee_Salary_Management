@@ -1,0 +1,424 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="java.util.*, java.text.*" %>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Management System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            background: #f0f4f8;
+            color: #2d3748;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        /* Unique wavy header */
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-align: center;
+            padding: 60px 20px 80px;
+            margin-bottom: 40px;
+            position: relative;
+            border-radius: 0 0 50px 50px;
+        }
+        
+        .header::after {
+            content: '';
+            position: absolute;
+            bottom: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 40px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 0 0 50px 50px;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            font-weight: 300;
+        }
+        
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            margin-bottom: 30px;
+        }
+        
+        /* Simple stats bar */
+        .stats-container {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            display: block;
+            color: #ffd700;
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+        
+        /* Unique hexagonal navigation cards */
+        .nav-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+        
+        .nav-card {
+            background: white;
+            padding: 40px 30px;
+            border-radius: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            border: 3px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .nav-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 4px;
+            transition: left 0.5s ease;
+        }
+        
+        .nav-card:nth-child(1)::before { background: #ff6b6b; }
+        .nav-card:nth-child(2)::before { background: #4ecdc4; }
+        .nav-card:nth-child(3)::before { background: #45b7d1; }
+        .nav-card:nth-child(4)::before { background: #96ceb4; }
+        .nav-card:nth-child(5)::before { background: #ffeaa7; }
+        .nav-card:nth-child(6)::before { background: #dda0dd; }
+        
+        .nav-card:hover::before {
+            left: 0;
+        }
+        
+        .nav-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+        }
+        
+        .nav-card:nth-child(1):hover { border-color: #ff6b6b; }
+        .nav-card:nth-child(2):hover { border-color: #4ecdc4; }
+        .nav-card:nth-child(3):hover { border-color: #45b7d1; }
+        .nav-card:nth-child(4):hover { border-color: #96ceb4; }
+        .nav-card:nth-child(5):hover { border-color: #ffeaa7; }
+        .nav-card:nth-child(6):hover { border-color: #dda0dd; }
+        
+        .nav-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            display: block;
+        }
+        
+        .nav-card:nth-child(1) .nav-icon { color: #ff6b6b; }
+        .nav-card:nth-child(2) .nav-icon { color: #4ecdc4; }
+        .nav-card:nth-child(3) .nav-icon { color: #45b7d1; }
+        .nav-card:nth-child(4) .nav-icon { color: #96ceb4; }
+        .nav-card:nth-child(5) .nav-icon { color: #ffeaa7; }
+        .nav-card:nth-child(6) .nav-icon { color: #dda0dd; }
+        
+        .nav-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #2d3748;
+        }
+        
+        .nav-description {
+            color: #718096;
+            font-size: 1rem;
+        }
+        
+        /* Simple footer */
+        .footer {
+            text-align: center;
+            padding: 40px 20px;
+            color: #718096;
+            background: white;
+            border-radius: 20px;
+            margin-top: 30px;
+        }
+        
+        /* Loading overlay */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(102, 126, 234, 0.9);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        
+        .loading-content {
+            text-align: center;
+            color: white;
+        }
+        
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top: 4px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Messages */
+        .message {
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            display: none;
+            text-align: center;
+        }
+        
+        .success-message {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+        }
+        
+        .error-message {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+        }
+        
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .nav-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .stats-container {
+                gap: 20px;
+            }
+            
+            .nav-card {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-content">
+            <div class="spinner"></div>
+            <p>Loading Employee Management System...</p>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Header Section -->
+        <div class="header">
+            <h1>Employee Management System</h1>
+            <p>Streamline your workforce management operations</p>
+            
+            <div class="stats-container">
+                <div class="stat-item">
+                    <span class="stat-number" id="totalEmployees">0</span>
+                    <span class="stat-label">Total Employees</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number"><%= new SimpleDateFormat("dd").format(new Date()) %></span>
+                    <span class="stat-label"><%= new SimpleDateFormat("MMM yyyy").format(new Date()) %></span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">6</span>
+                    <span class="stat-label">Active Modules</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Messages -->
+        <div class="success-message message" id="successMessage"></div>
+        <div class="error-message message" id="errorMessage"></div>
+        
+        <!-- Navigation Grid -->
+        <div class="nav-grid">
+            <div class="nav-card" onclick="navigateToPage('empadd.jsp')">
+                <span class="nav-icon">👤</span>
+                <h3 class="nav-title">Add Employee</h3>
+                <p class="nav-description">Register new employees with complete personal and professional details</p>
+            </div>
+            
+            <div class="nav-card" onclick="navigateToPage('empupdate.jsp')">
+                <span class="nav-icon">✏️</span>
+                <h3 class="nav-title">Update Employee</h3>
+                <p class="nav-description">Modify existing employee information and salary details</p>
+            </div>
+            
+            <div class="nav-card" onclick="navigateToPage('empdelete.jsp')">
+                <span class="nav-icon">🗑️</span>
+                <h3 class="nav-title">Delete Employee</h3>
+                <p class="nav-description">Remove employee records from the database securely</p>
+            </div>
+            
+            <div class="nav-card" onclick="navigateToPage('empdisplay.jsp')">
+                <span class="nav-icon">👁️</span>
+                <h3 class="nav-title">Display Employee</h3>
+                <p class="nav-description">View comprehensive employee details and information</p>
+            </div>
+            
+            <div class="nav-card" onclick="navigateToPage('reports.jsp')">
+                <span class="nav-icon">📊</span>
+                <h3 class="nav-title">Generate Reports</h3>
+                <p class="nav-description">Create detailed reports based on various criteria and filters</p>
+            </div>
+            
+            <div class="nav-card" onclick="showAllEmployees()">
+                <span class="nav-icon">📋</span>
+                <h3 class="nav-title">View All Employees</h3>
+                <p class="nav-description">Display complete list of all registered employees</p>
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <div class="footer">
+            <p>&copy; <%= new Date().getYear() + 1900 %> Employee Management System</p>
+            <p>Built with Java EE, JSP, JDBC, and MySQL</p>
+            <p>Last Updated: <%= new SimpleDateFormat("MMMM dd, yyyy 'at' HH:mm").format(new Date()) %></p>
+        </div>
+    </div>
+
+    <script>
+        // Show loading overlay on page load
+        window.addEventListener('load', function() {
+            document.getElementById('loadingOverlay').style.display = 'flex';
+            
+            setTimeout(function() {
+                document.getElementById('loadingOverlay').style.display = 'none';
+                loadEmployeeCount();
+            }, 1000);
+        });
+        
+        // Navigation function
+        function navigateToPage(page) {
+            showLoading();
+            setTimeout(function() {
+                window.location.href = page;
+            }, 500);
+        }
+        
+        // Show all employees
+        function showAllEmployees() {
+            showLoading();
+            setTimeout(function() {
+                window.location.href = 'emplist.jsp';
+            }, 500);
+        }
+        
+        // Show loading overlay
+        function showLoading() {
+            document.getElementById('loadingOverlay').style.display = 'flex';
+        }
+        
+        // Load employee count
+        function loadEmployeeCount() {
+            // Simulated count animation
+            let count = 0;
+            const target = 124;
+            const increment = target / 30;
+            
+            const timer = setInterval(function() {
+                count += increment;
+                if (count >= target) {
+                    count = target;
+                    clearInterval(timer);
+                }
+                document.getElementById('totalEmployees').textContent = Math.floor(count);
+            }, 50);
+        }
+        
+        // Show success message
+        function showSuccessMessage(message) {
+            const successEl = document.getElementById('successMessage');
+            successEl.textContent = message;
+            successEl.style.display = 'block';
+            
+            setTimeout(function() {
+                successEl.style.display = 'none';
+            }, 5000);
+        }
+        
+        // Show error message
+        function showErrorMessage(message) {
+            const errorEl = document.getElementById('errorMessage');
+            errorEl.textContent = message;
+            errorEl.style.display = 'block';
+            
+            setTimeout(function() {
+                errorEl.style.display = 'none';
+            }, 5000);
+        }
+        
+        // Check URL parameters for messages
+        window.addEventListener('load', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            
+            if (urlParams.get('success')) {
+                setTimeout(function() {
+                    showSuccessMessage(decodeURIComponent(urlParams.get('success')));
+                }, 1200);
+            }
+            
+            if (urlParams.get('error')) {
+                setTimeout(function() {
+                    showErrorMessage(decodeURIComponent(urlParams.get('error')));
+                }, 1200);
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,104 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="java.util.*, com.model.Employee, com.dao.EmployeeDAO" %>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Delete Employee - EMS</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #ff6b6b, #ee5a52);
+            margin: 0; padding: 20px; color: #333;
+        }
+        .container { max-width: 1000px; margin: auto; background: #fff; padding: 30px; border-radius: 15px; box-shadow: 0 0 20px rgba(0,0,0,0.1); }
+        h1, h2 { text-align: center; color: #ff6b6b; }
+        .nav, .msg, .warn, .table-container, .form { margin: 20px 0; }
+        .nav a { color: #ff6b6b; text-decoration: none; font-weight: bold; }
+        .btn, input[type="number"] {
+            padding: 12px 20px; border: none; border-radius: 10px;
+            font-size: 1rem; width: 100%; box-sizing: border-box;
+        }
+        .btn {
+            background: #ff6b6b; color: white; cursor: pointer;
+            margin-top: 10px; transition: 0.3s;
+        }
+        .btn:hover { background: #ee5a52; }
+        .msg { padding: 15px; border-radius: 10px; text-align: center; }
+        .success { background: #c6f6d5; color: #276749; }
+        .error { background: #fed7d7; color: #c53030; }
+        .warn { background: #fef5e7; color: #c05621; padding: 10px; border-left: 5px solid #f6ad55; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th, td { padding: 12px; border-bottom: 1px solid #eee; text-align: left; }
+        th { background: #ff6b6b; color: white; }
+        tr:hover td { background: #fff5f5; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>🗑️ Delete Employee</h1>
+    <div class="nav"><a href="index.jsp">← Back to Dashboard</a></div>
+
+    <div class="form">
+        <h2>Delete Employee Record</h2>
+        <div class="warn">⚠️ This action cannot be undone. Please verify the employee number before deletion.</div>
+        <form method="post" action="DeleteEmployee">
+            <input type="number" name="empno" placeholder="Enter Employee Number" required min="1">
+            <button type="submit" class="btn" onclick="return confirm('Are you sure? This action cannot be undone!')">🗑️ Delete Employee</button>
+        </form>
+    </div>
+
+    <%
+        String msg = (String) request.getAttribute("message");
+        if (msg != null) {
+            String msgClass = msg.toLowerCase().contains("success") || msg.toLowerCase().contains("deleted") ? "success" : "error";
+    %>
+    <div class="msg <%= msgClass %>"><%= msg %></div>
+    <% } %>
+
+    <div class="table-container">
+        <h2>Current Employee List</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Emp No</th>
+                    <th>Name</th>
+                    <th>Joining Date</th>
+                    <th>Gender</th>
+                    <th>Salary</th>
+                </tr>
+            </thead>
+            <tbody>
+            <%
+                try {
+                    List<Employee> empList = EmployeeDAO.getAllEmployees();
+                    if (empList != null && !empList.isEmpty()) {
+                        for (Employee emp : empList) {
+            %>
+                <tr>
+                    <td>#<%= emp.getId() %></td>
+                    <td><%= emp.getName() %></td>
+                    <td><%= emp.getDoj() %></td>
+                    <td><%= emp.getGender() %></td>
+                    <td>₹<%= String.format("%.2f", emp.getSalary()) %></td>
+                </tr>
+            <%
+                        }
+                    } else {
+            %>
+                <tr><td colspan="5" style="text-align:center;">👥 No employees found.</td></tr>
+            <%
+                    }
+                } catch (Exception e) {
+            %>
+                <tr><td colspan="5" class="error">Error loading employees: <%= e.getMessage() %></td></tr>
+            <%
+                    e.printStackTrace();
+                }
+            %>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>

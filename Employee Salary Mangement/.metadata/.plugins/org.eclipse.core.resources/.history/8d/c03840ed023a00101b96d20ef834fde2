@@ -1,0 +1,47 @@
+package com.servlet;
+
+import javax.servlet.*;
+import javax.servlet.http.*;
+import java.io.IOException;
+import com.dao.EmployeeDAO;
+import com.model.Employee;
+
+public class DeleteEmployeeServlet extends HttpServlet {
+
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) 
+            throws ServletException, IOException {
+        
+        String empnoStr = request.getParameter("empno");
+        String message = "";
+        
+        try {
+            int empno = Integer.parseInt(empnoStr);
+            
+            // First check if employee exists
+            Employee emp = EmployeeDAO.getEmployeeById(empno);
+            
+            if (emp == null) {
+                message = "Employee with ID " + empno + " not found! Cannot delete non-existent employee.";
+            } else {
+                // Employee exists, proceed with deletion
+                boolean deleted = EmployeeDAO.deleteEmployee(empno);
+                
+                if (deleted) {
+                    message = "Employee " + emp.getName() + " (ID: " + empno + ") successfully deleted!";
+                } else {
+                    message = "Failed to delete employee. Please try again.";
+                }
+            }
+            
+        } catch (NumberFormatException e) {
+            message = "Invalid employee number format!";
+        } catch (Exception e) {
+            message = "Error occurred while deleting employee: " + e.getMessage();
+            e.printStackTrace();
+        }
+        
+        request.setAttribute("message", message);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("deleteEmployee.jsp");
+        dispatcher.forward(request, response);
+    }
+}

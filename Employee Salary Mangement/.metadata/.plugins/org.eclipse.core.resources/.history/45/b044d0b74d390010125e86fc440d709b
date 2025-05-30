@@ -1,0 +1,60 @@
+package com.servlet;
+
+import javax.servlet.*;
+import javax.servlet.http.*;
+import java.io.IOException;
+import java.util.List;
+import com.dao.EmployeeDAO;
+import com.model.Employee;
+
+public class UpdateEmployeeServlet extends HttpServlet {
+
+    // Show all employees for update form
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        try {
+            List<Employee> list = EmployeeDAO.getAllEmployees();
+            request.setAttribute("employeeList", list);
+        } catch (Exception e) {
+            request.setAttribute("message", "Error fetching employee list: " + e.getMessage());
+        }
+        RequestDispatcher rd = request.getRequestDispatcher("empupdate.jsp");
+        rd.forward(request, response);
+    }
+
+    // Process the update form submission
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        try {
+            int empno = Integer.parseInt(request.getParameter("empno"));
+            String name = request.getParameter("name");
+            String dojStr = request.getParameter("doj");
+            String gender = request.getParameter("gender");
+            double salary = Double.parseDouble(request.getParameter("salary"));
+
+            Employee emp = new Employee();
+            emp.setId(empno);
+            emp.setName(name);
+            emp.setDoj(java.time.LocalDate.parse(dojStr));
+            emp.setGender(gender);
+            emp.setSalary(salary);
+
+            EmployeeDAO.updateEmployee(emp);
+            request.setAttribute("message", "Employee updated successfully.");
+
+        } catch (Exception e) {
+            request.setAttribute("message", "Error updating employee: " + e.getMessage());
+        }
+
+        // Always show updated list after update
+        try {
+            List<Employee> list = EmployeeDAO.getAllEmployees();
+            request.setAttribute("employeeList", list);
+        } catch (Exception e) {
+            request.setAttribute("message", "Error fetching employee list: " + e.getMessage());
+        }
+
+        RequestDispatcher rd = request.getRequestDispatcher("empupdate.jsp");
+        rd.forward(request, response);
+    }
+}

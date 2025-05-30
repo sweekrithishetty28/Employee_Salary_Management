@@ -1,0 +1,45 @@
+package com.servlet;
+
+import com.dao.EmployeeDAO;
+import com.model.Employee;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.*;
+import java.io.IOException;
+
+@WebServlet("/add")
+public class AddEmployeeServlet extends HttpServlet {
+
+    private EmployeeDAO employeeDAO;
+
+    @Override
+    public void init() {
+        employeeDAO = new EmployeeDAO();
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        try {
+            int empno = Integer.parseInt(request.getParameter("empno"));
+            String empName = request.getParameter("empName");
+            String doj = request.getParameter("doj");
+            String gender = request.getParameter("gender");
+            double bsalary = Double.parseDouble(request.getParameter("bsalary"));
+
+            Employee emp = new Employee(empno, empName, doj, gender, bsalary);
+
+            employeeDAO.insertEmployee(emp);  // This should insert employee into DB
+
+            // Set success message and forward back to empadd.jsp
+            request.setAttribute("message", "Employee added successfully!");
+            request.getRequestDispatcher("empadd.jsp").forward(request, response);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            request.setAttribute("error", "Error adding employee: " + e.getMessage());
+            request.getRequestDispatcher("empadd.jsp").forward(request, response);
+        }
+    }
+}

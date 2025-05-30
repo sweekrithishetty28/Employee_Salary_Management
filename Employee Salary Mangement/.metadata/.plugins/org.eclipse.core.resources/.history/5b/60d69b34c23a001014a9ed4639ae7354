@@ -1,0 +1,141 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="java.util.*, com.model.Employee, com.dao.EmployeeDAO" %>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Update Employee</title>
+    <style>
+        body { font-family: Arial; margin: 20px; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .section { margin: 20px 0; padding: 15px; border: 1px solid #ddd; }
+        input, select { width: 200px; padding: 5px; margin: 5px; }
+        .btn { background: #4CAF50; color: white; padding: 8px 15px; border: none; cursor: pointer; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 8px; border: 1px solid #ddd; text-align: left; }
+        th { background: #f2f2f2; }
+        .error { color: red; }
+        .success { color: green; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Update Employee</h2>
+        
+        <!-- Search -->
+        <div class="section">
+            <h3>Search Employee</h3>
+            <form method="get">
+                Employee ID: <input type="number" name="id" required 
+                    value="<%= request.getParameter("id") != null ? request.getParameter("id") : "" %>">
+                <button type="submit" class="btn">Search</button>
+            </form>
+        </div>
+
+        <%
+        String idParam = request.getParameter("id");
+        Employee emp = null;
+        String message = "";
+        
+        if (idParam != null && !idParam.trim().isEmpty()) {
+            try {
+                int empId = Integer.parseInt(idParam);
+                emp = EmployeeDAO.getEmployeeById(empId);
+                if (emp == null) {
+                    message = "Employee not found!";
+                }
+            } catch (Exception e) {
+                message = "Error: " + e.getMessage();
+            }
+        }
+        %>
+        
+        <% if (!message.isEmpty()) { %>
+        <div class="error"><%= message %></div>
+        <% } %>
+        
+        <% if (emp != null) { %>
+        <!-- Update Form -->
+        <div class="section">
+            <h3>Update Employee Details</h3>
+            <form action="UpdateEmployee" method="post">
+                <input type="hidden" name="id" value="<%= emp.getId() %>">
+                
+                <table>
+                    <tr>
+                        <td>ID:</td>
+                        <td><%= emp.getId() %></td>
+                    </tr>
+                    <tr>
+                        <td>Name:</td>
+                        <td><input type="text" name="name" required value="<%= emp.getName() %>"></td>
+                    </tr>
+                    <tr>
+                        <td>Date of Joining:</td>
+                        <td><input type="date" name="doj" required value="<%= emp.getDoj() %>"></td>
+                    </tr>
+                    <tr>
+                        <td>Gender:</td>
+                        <td>
+                            <select name="gender" required>
+                                <option value="">Select</option>
+                                <option value="Male" <%= "Male".equals(emp.getGender()) ? "selected" : "" %>>Male</option>
+                                <option value="Female" <%= "Female".equals(emp.getGender()) ? "selected" : "" %>>Female</option>
+                                <option value="Other" <%= "Other".equals(emp.getGender()) ? "selected" : "" %>>Other</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Salary:</td>
+                        <td><input type="number" name="salary" required step="0.01" value="<%= emp.getSalary() %>"></td>
+                    </tr>
+                </table>
+                
+                <br>
+                <button type="submit" class="btn">Update</button>
+                <button type="reset" class="btn" style="background: #666;">Reset</button>
+            </form>
+        </div>
+        <% } %>
+        
+        <!-- All Employees -->
+        <div class="section">
+            <h3>All Employees</h3>
+            <%
+            try {
+                List<Employee> list = EmployeeDAO.getAllEmployees();
+                if (list != null && !list.isEmpty()) {
+            %>
+            <table>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>DOJ</th>
+                    <th>Gender</th>
+                    <th>Salary</th>
+                </tr>
+                <%
+                for (Employee e : list) {
+                    String highlight = (emp != null && e.getId() == emp.getId()) ? "style='background: yellow;'" : "";
+                %>
+                <tr <%= highlight %>>
+                    <td><%= e.getId() %></td>
+                    <td><%= e.getName() %></td>
+                    <td><%= e.getDoj() %></td>
+                    <td><%= e.getGender() %></td>
+                    <td>₹<%= e.getSalary() %></td>
+                </tr>
+                <% } %>
+            </table>
+            <% } else { %>
+            <p>No employees found.</p>
+            <% } %>
+            <% } catch (Exception ex) { %>
+            <div class="error">Error: <%= ex.getMessage() %></div>
+            <% } %>
+        </div>
+        
+        <br>
+        <a href="index.jsp">← Back to Home</a>
+    </div>
+</body>
+</html>

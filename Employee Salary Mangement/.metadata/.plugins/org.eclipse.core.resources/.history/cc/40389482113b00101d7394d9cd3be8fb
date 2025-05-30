@@ -1,0 +1,89 @@
+<%@ page import="java.util.List" %>
+<%@ page import="com.model.Employee" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%
+List<Employee> reportList = (List<Employee>) request.getAttribute("reportList");
+%>
+<html>
+<head>
+<title>Report Result</title>
+<style>
+body { 
+    font-family: Arial; 
+    padding: 20px; 
+    background-color: #2980b9;
+    color: white;
+}
+table { 
+    border-collapse: collapse; 
+    width: 100%; 
+    margin-top: 20px; 
+    background-color: white;
+}
+th, td { 
+    border: 1px solid #ccc; 
+    padding: 10px; 
+    text-align: center; 
+    color: #333;
+}
+th { 
+    background-color: #3498db; 
+    color: white; 
+}
+.back { 
+    margin-top: 20px; 
+    display: inline-block; 
+    color: white;
+    text-decoration: none;
+    padding: 8px 16px;
+    background-color: #34495e;
+    border-radius: 4px;
+}
+.back:hover {
+    background-color: #2c3e50;
+}
+h2 {
+    color: white;
+}
+p {
+    color: white;
+}
+</style>
+</head>
+<body>
+<h2>Report Results</h2>
+<%
+if (reportList == null || reportList.isEmpty()) {
+%>
+<p>No employees found matching the criteria.</p>
+<%
+} else {
+%>
+<table>
+<tr>
+<th>Emp No</th>
+<th>Name</th>
+<th>Date of Joining</th>
+<th>Gender</th>
+<th>Salary</th>
+</tr>
+<%
+for (Employee e : reportList) {
+%>
+<tr>
+<td><%= e.getId() %></td>
+<td><%= e.getName() %></td>
+<td><%= e.getDoj() %></td>
+<td><%= e.getGender() %></td>
+<td><%= e.getSalary() %></td>
+</tr>
+<%
+}
+%>
+</table>
+<%
+}
+%>
+<a href="reports.jsp" class="back">← Back to Reports</a>
+</body>
+</html>

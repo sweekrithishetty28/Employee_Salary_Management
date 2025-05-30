@@ -1,0 +1,58 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" %>
+<%@ page import="java.util.*, com.model.Employee, com.dao.EmployeeDAO" %>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Employee</title>
+</head>
+<body>
+
+<h2>Add New Employee</h2>
+<form action="AddEmployee" method="post">
+    <label>Emp No:</label><input type="number" name="id" required><br>
+    <label>Name:</label><input type="text" name="name" required><br>
+    <label>Joining Date:</label><input type="date" name="doj" required><br>
+    <label>Gender:</label>
+    <select name="gender">
+        <option value="Male">Male</option>
+        <option value="Female">Female</option>
+    </select><br>
+    <label>Basic Salary:</label><input type="number" step="0.01" name="salary" required><br>
+    <input type="submit" value="Add Employee">
+</form>
+
+<hr>
+
+<h2>All Employees</h2>
+<table border="1" cellpadding="5">
+    <tr>
+        <th>Emp No</th>
+        <th>Name</th>
+        <th>Joining Date</th>
+        <th>Gender</th>
+        <th>Salary</th>
+    </tr>
+
+<%
+    try {
+        List<Employee> list = EmployeeDAO.getAllEmployees();
+        for (Employee e : list) {
+%>
+    <tr>
+        <td><%= e.getId() %></td>
+        <td><%= e.getName() %></td>
+        <td><%= e.getDoj() %></td>
+        <td><%= e.getGender() %></td>
+        <td><%= e.getSalary() %></td>
+    </tr>
+<%
+        }
+    } catch (Exception ex) {
+        out.println("<tr><td colspan='5'>Error: " + ex.getMessage() + "</td></tr>");
+        ex.printStackTrace();
+    }
+%>
+</table>
+
+</body>
+</html>

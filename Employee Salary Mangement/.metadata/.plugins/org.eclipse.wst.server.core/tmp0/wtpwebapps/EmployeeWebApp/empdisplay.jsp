@@ -1,0 +1,142 @@
+<%@ page import="java.sql.*, java.util.*, java.time.LocalDate" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<html>
+<head>
+<title>Employee List</title>
+<style>
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: #e6f2ff; /* Changed to light blue */
+}
+
+h2 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 30px;
+}
+
+table {
+    width: 90%;
+    margin: 0 auto;
+    background-color: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+th, td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+th {
+    background-color: #007bff;
+    color: white;
+    font-weight: bold;
+}
+
+tr:hover {
+    background-color: #f8f9fa;
+}
+
+.message {
+    text-align: center;
+    padding: 20px;
+    font-size: 16px;
+}
+
+.error {
+    color: #dc3545;
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+    border-radius: 4px;
+    padding: 10px;
+    margin: 20px auto;
+    width: 80%;
+}
+
+/* Style for Back button */
+.back-btn {
+    display: block;
+    width: 100px;
+    margin: 30px auto 0 auto;
+    padding: 10px 15px;
+    background-color: #007bff;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    font-size: 16px;
+}
+.back-btn:hover {
+    background-color: #0056b3;
+}
+</style>
+</head>
+<body>
+<h2>Employee List</h2>
+
+<%
+String url = "jdbc:mysql://localhost:3306/employeedb";
+String user = "root";
+String pass = "";
+Connection con = null;
+Statement stmt = null;
+ResultSet rs = null;
+
+try {
+    Class.forName("com.mysql.cj.jdbc.Driver");
+    con = DriverManager.getConnection(url, user, pass);
+    stmt = con.createStatement();
+    rs = stmt.executeQuery("SELECT * FROM Employee");
+
+    if (!rs.isBeforeFirst()) {
+%>
+    <div class="message">No employees found.</div>
+<%
+    } else {
+%>
+<table>
+<tr>
+<th>Emp No</th>
+<th>Name</th>
+<th>Date of Joining</th>
+<th>Gender</th>
+<th>Salary</th>
+</tr>
+<%
+        while (rs.next()) {
+%>
+<tr>
+<td><%= rs.getInt("Empno") %></td>
+<td><%= rs.getString("EmpName") %></td>
+<td><%= rs.getDate("DoJ") %></td>
+<td><%= rs.getString("Gender") %></td>
+<td><%= rs.getDouble("Bsalary") %></td>
+</tr>
+<%
+        }
+%>
+</table>
+<%
+    }
+} catch (Exception e) {
+%>
+<div class="error">Error: <%= e.getMessage() %></div>
+<%
+} finally {
+    try { if (rs != null) rs.close(); } catch (Exception e) {}
+    try { if (stmt != null) stmt.close(); } catch (Exception e) {}
+    try { if (con != null) con.close(); } catch (Exception e) {}
+}
+%>
+
+<!-- Back button -->
+<a href="index.jsp" class="back-btn">Back</a>
+
+</body>
+</html>

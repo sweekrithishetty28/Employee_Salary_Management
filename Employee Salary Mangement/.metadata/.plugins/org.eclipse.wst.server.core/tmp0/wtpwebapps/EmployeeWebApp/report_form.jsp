@@ -1,0 +1,169 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%
+String action = request.getParameter("action");
+String actionTitle = "";
+if ("NameFilter".equals(action)) {
+    actionTitle = "Filter by Name Starting Letter";
+} else if ("ServiceFilter".equals(action)) {
+    actionTitle = "Filter by Years of Service";
+} else if ("SalaryFilter".equals(action)) {
+    actionTitle = "Filter by Minimum Salary";
+}
+%>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Report Filter Form</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { 
+    font-family: Arial, sans-serif; 
+    background: #e3f2fd;
+    min-height: 100vh;
+    padding: 20px;
+}
+.container { 
+    width: 100%; 
+    max-width: 600px; 
+    margin: 0 auto; 
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+.header {
+    background: #2d3748;
+    color: white;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+}
+.form-section {
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+label { 
+    font-weight: 600;
+    color: #2d3748;
+    display: block; 
+    margin-top: 15px;
+    margin-bottom: 5px;
+}
+input { 
+    width: 100%; 
+    padding: 12px; 
+    margin-bottom: 15px; 
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+input:focus {
+    outline: none;
+    border-color: #1976d2;
+    box-shadow: 0 0 0 3px rgba(25, 118, 210, 0.1);
+}
+.submit-btn { 
+    background:#1976d2 ;
+    color: white; 
+    border: none; 
+    padding: 15px 30px;
+    border-radius: 8px;
+    cursor: pointer; 
+    font-size: 16px;
+    font-weight: 600;
+    width: 100%;
+    margin-top: 20px;
+    transition: all 0.3s ease;
+}
+.submit-btn:hover {
+    background: #1976d2;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(46, 204, 113, 0.4);
+}
+h2 {
+    color: #2d3748;
+    margin-bottom: 20px;
+}
+.form-group {
+    margin-bottom: 20px;
+}
+.form-group label {
+    margin-top: 0;
+}
+.required::after {
+    content: " *";
+    color: #e53e3e;
+}
+.back-link {
+    display: inline-block;
+    color: white;
+    text-decoration: none;
+    background: rgba(255,255,255,0.2);
+    padding: 10px 20px;
+    border-radius: 8px;
+    margin-top: 20px;
+    transition: all 0.3s ease;
+    font-weight: 500;
+    text-align: center;
+}
+.back-link:hover {
+    background: rgba(255,255,255,0.3);
+    transform: translateX(-5px);
+}
+.info-card {
+    background: #e8f4f8;
+    border: 1px solid #81c784;
+    border-radius: 10px;
+    padding: 20px;
+}
+.info-card h4 {
+    color: #2e7d32;
+    margin-bottom: 10px;
+}
+.info-card p {
+    color: #2d3748;
+    font-size: 14px;
+    line-height: 1.5;
+}
+</style>
+</head>
+<body>
+    <div class="header">
+        <h1><%= actionTitle %></h1>
+        <a href="reports.jsp" class="back-link">← Back to Reports</a>
+    </div>
+    
+    <div class="container">
+        <div class="form-section">
+            <h2>Generate Report</h2>
+            
+            <form action="ReportServlet" method="get">
+                <input type="hidden" name="action" value="<%= action %>"/>
+                
+                <% if ("NameFilter".equals(action)) { %>
+                <div class="form-group">
+                    <label for="startsWith" class="required">Enter Starting Letter</label>
+                    <input type="text" id="startsWith" name="startsWith" required maxlength="1" placeholder="Enter a single letter (e.g., A)">
+                </div>
+                <% } else if ("ServiceFilter".equals(action)) { %>
+                <div class="form-group">
+                    <label for="years" class="required">Enter Minimum Years of Service</label>
+                    <input type="number" id="years" name="years" required min="0" placeholder="Enter minimum years (e.g., 5)">
+                </div>
+                <% } else if ("SalaryFilter".equals(action)) { %>
+                <div class="form-group">
+                    <label for="salary" class="required">Enter Minimum Salary</label>
+                    <input type="number" id="salary" name="salary" required step="0.01" min="0" placeholder="Enter minimum salary (e.g., 50000.00)">
+                </div>
+                <% } %>
+                
+                <input type="submit" value="Generate Report" class="submit-btn">
+            </form>
+        </div>
+        
+       
+    </div>
+</body>
+</html>

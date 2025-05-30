@@ -1,0 +1,38 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%
+    String action = request.getParameter("action");
+%>
+<html>
+<head>
+    <title>Report Filter Form</title>
+    <style>
+        body { font-family: Arial; padding: 20px; }
+        form { margin-top: 20px; }
+        label, input { display: block; margin-bottom: 10px; }
+        input[type="submit"] {
+            background-color: #2ecc71;
+            border: none;
+            padding: 8px 16px;
+            color: white;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h2>Filter: <%= action %></h2>
+    <form action="ReportServlet" method="get">
+        <input type="hidden" name="action" value="<%= action %>"/>
+        <% if ("NameFilter".equals(action)) { %>
+            <label>Enter Starting Letter:</label>
+            <input type="text" name="startsWith" required/>
+        <% } else if ("ServiceFilter".equals(action)) { %>
+            <label>Enter Minimum Years of Service:</label>
+            <input type="number" name="years" required min="0"/>
+        <% } else if ("SalaryFilter".equals(action)) { %>
+            <label>Enter Minimum Salary:</label>
+            <input type="number" name="salary" required step="0.01"/>
+        <% } %>
+        <input type="submit" value="Generate Report"/>
+    </form>
+</body>
+</html>

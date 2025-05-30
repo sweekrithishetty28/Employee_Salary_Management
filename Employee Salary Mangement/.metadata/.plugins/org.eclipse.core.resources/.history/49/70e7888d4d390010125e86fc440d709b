@@ -1,0 +1,54 @@
+<%@ page import="com.model.Employee, com.dao.EmployeeDAO" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" %>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Update Employee</title>
+</head>
+<body>
+
+<h2>Search Employee by ID to Update</h2>
+<form method="get">
+    <label>Enter Emp No:</label>
+    <input type="number" name="id" required>
+    <input type="submit" value="Search">
+</form>
+
+<%
+    String idParam = request.getParameter("id");
+    if (idParam != null) {
+        try {
+            int empId = Integer.parseInt(idParam);
+            Employee emp = EmployeeDAO.getEmployeeById(empId);
+
+            if (emp != null) {
+%>
+    <h3>Update Employee</h3>
+    <form action="UpdateEmployee" method="post">
+        <input type="hidden" name="id" value="<%= emp.getId() %>"><br>
+        <label>Name:</label>
+        <input type="text" name="name" value="<%= emp.getName() %>" required><br>
+        <label>Joining Date:</label>
+        <input type="date" name="doj" value="<%= emp.getDoj() %>" required><br>
+        <label>Gender:</label>
+        <select name="gender">
+            <option value="Male" <%= "Male".equals(emp.getGender()) ? "selected" : "" %>>Male</option>
+            <option value="Female" <%= "Female".equals(emp.getGender()) ? "selected" : "" %>>Female</option>
+        </select><br>
+        <label>Basic Salary:</label>
+        <input type="number" name="salary" step="0.01" value="<%= emp.getSalary() %>" required><br>
+        <input type="submit" value="Update Employee">
+    </form>
+<%
+            } else {
+                out.println("<p style='color:red;'>Employee not found!</p>");
+            }
+        } catch (Exception e) {
+            out.println("<p style='color:red;'>Error: " + e.getMessage() + "</p>");
+            e.printStackTrace();
+        }
+    }
+%>
+
+</body>
+</html>
