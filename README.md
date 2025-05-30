@@ -91,3 +91,29 @@ connection = DriverManager.getConnection(
     "your_password"
 );
 ```
+### Output
+### Home Page
+![Home Page](https://github.com/sweekrithishetty28/Employee_Salary_Management/blob/6a364d74371104c2f325f1cbdb55ba3696d5515c/Screenshots/home.png)
+
+###  Add Product
+![Add Product](https://github.com/sweekrithishetty28/Employee-Salary-Management/blob/9c057c9e4501d9283d9b2a6a028d61cf385ce252/Screenshots/add.png)
+
+###  Update Product
+![Update Product](https://github.com/sweekrithishetty28/Employee-Salary-Management/blob/8bc067218751e191bc4dec7e31c0adba7efcf601/Screenshots/update.png)
+
+### Delete Product
+![Delete Product](https://github.com/sweekrithishetty28/Employee-Salary-Management/blob/8bc067218751e191bc4dec7e31c0adba7efcf601/Screenshots/delete.png)
+
+###  Display Products
+![Display Products](https://github.com/sweekrithishetty28/Employee-Salary-Management/blob/8bc067218751e191bc4dec7e31c0adba7efcf601/Screenshots/display.png)
+
+### Generate Reports
+![Generate Reports](https://github.com/sweekrithishetty28/Employee-Salary-Management/raw/9c057c9e4501d9283d9b2a6a028d61cf385ce252/Screenshots/report1.png)
+![Generate Reports](https://github.com/sweekrithishetty28/Employee-Salary-Management/raw/9c057c9e4501d9283d9b2a6a028d61cf385ce252/Screenshots/report2.png)
+![Generate Reports](https://github.com/sweekrithishetty28/Employee-Salary-Management/raw/9c057c9e4501d9283d9b2a6a028d61cf385ce252/Screenshots/report3.png)
+![Generate Reports](https://github.com/sweekrithishetty28/Employee-Salary-Management/raw/9c057c9e4501d9283d9b2a6a028d61cf385ce252/Screenshots/report4.png)
+![Generate Reports](https://github.com/sweekrithishetty28/Employee-Salary-Management/raw/9c057c9e4501d9283d9b2a6a028d61cf385ce252/Screenshots/report5.png)
+![Generate Reports](https://github.com/sweekrithishetty28/Employee-Salary-Management/raw/9c057c9e4501d9283d9b2a6a028d61cf385ce252/Screenshots/report6.png)
+![Generate Reports](https://github.com/sweekrithishetty28/Employee-Salary-Management/raw/9c057c9e4501d9283d9b2a6a028d61cf385ce252/Screenshots/report7.png)
+
+
